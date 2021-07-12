@@ -1,4 +1,4 @@
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { UserService } from './user.service';
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,14 +17,26 @@ export class AuthService {
   }
 
   login() {
-    console.log("logging");
-    let returnURL = this.route.snapshot.queryParamMap.get('returnURL') || '/';
-    localStorage.setItem('returnURL', returnURL);
-    this.fireAuth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    let returnURL = this.route.snapshot.queryParamMap.get('returnURL') ;
+    console.log("return" ,returnURL);
+    if(returnURL && returnURL!=="/" && returnURL!=="/login")
+      localStorage.setItem('returnURL', returnURL);
+    this.fireAuth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).then(()=>
+    {
+      this.router.navigate(['/']);
+    });
   }
 
   logout() {
     this.fireAuth.signOut().then(()=> this.router.navigate(['/login']));
+  }
+
+  get isAuthenticated()
+  {
+    return this.user$.pipe( map((user) => {
+      if(user && user.uid)  return true;
+      else return false;
+    }));    
   }
 
   get appUser$() : Observable<AppUser|null>
@@ -33,9 +45,14 @@ export class AuthService {
     {
       if(firebaseUser && firebaseUser.uid) 
       {
-        //console.log("uid",firebaseUser.uid);
-        //console.log("user",this.userService.getUser(firebaseUser?.uid));
-        return this.userService.getUser(firebaseUser?.uid);
+        return this.userService.getUser(firebaseUser?.uid).pipe(switchMap((userSnapshot :any) => {
+          let user  = userSnapshot.payload.toJSON();
+          return of({ uId: userSnapshot.key,
+              name:user['name'] , 
+              email:user['email'],
+              isAdmin:user['isAdmin'] 
+          } as AppUser);
+        }));;
       }
       else
         return of(null);

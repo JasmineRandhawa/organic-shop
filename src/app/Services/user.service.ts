@@ -1,9 +1,7 @@
-import { switchMap } from 'rxjs/operators';
 import  firebase  from 'firebase/app';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase  } from '@angular/fire/database';
-import { Observable, of } from 'rxjs';
-import { AppUser } from '../models/app-user';
+
 
 @Injectable()
 export class UserService {
@@ -11,17 +9,9 @@ export class UserService {
     
    }
 
-   getUser(uid:string)  : Observable<AppUser>
+   getUser(uid:string) 
    {
-    return  this.db.object('/users/' + uid).snapshotChanges().pipe(switchMap((userSnapshot :any) => {
-        let user  = userSnapshot.payload.toJSON();
-        console.log("User",user);
-        return of({ uId: userSnapshot.key,
-            name:user['name'] , 
-            email:user['email'],
-            isAdmin:user['isAdmin'] 
-      });
-    }));
+     return  this.db.object('/users/' + uid).snapshotChanges();
    }
 
    save(user:firebase.User)

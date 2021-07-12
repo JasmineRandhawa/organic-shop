@@ -1,0 +1,51 @@
+<div class="formStyle">
+<form  style="display:inline-block;width: 230px;height: 410px;">
+    <div class="form-group" style="width: 210px;">
+        <label for="title" style="float:left;">
+            <h5>Title</h5>
+        </label>
+        <input id="title" class="form-control formCSS" type="text" />
+    </div>
+    <br />
+    <div class="form-group" style="width: 210px;">
+        <label for="price" style="float:left;">
+            <h5>Price</h5>
+        </label>
+        <div class="input-group">
+            <span class="input-group-addon priceCSS">&nbsp;  $ &nbsp;</span> 
+            <input id="price" class="form-control formCSS" type="number" />
+            <span class="input-group-addon priceCSS">&nbsp; .00&nbsp;</span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group" style="width: 210px;">
+        <label for="category"  style="float:left;">
+            <h5>Category</h5>
+        </label>
+        <label class="select">
+        <select id="category"  class="form-control formCSS selectCSS">
+            <option *ngFor = "let c of (categories$|async)" value="c.uId" >
+                {{c.name}}
+            </option>
+        </select>
+        </label>
+    </div>
+    <br />
+    <div style="width: 210px;" class="form-group">
+        <label style="float:left;"><h5>Image URL</h5></label>
+        <input id="imageURL" type="text" class="form-control" />
+    </div>
+    <br />
+    <div style="width: 210px;" class="form-group">
+        <button type="button" class="btn btn-primary" style="float: left;">Save</button>
+    </div>
+
+</form>
+&nbsp;&nbsp;
+<div style="display:inline-block;width: 230px;height: 410px;">
+    <img src="assets/images/google.JPG" height="200" width="250" style="border: 1px solid #ccc;" />
+    <br />
+    <label style="float:left;padding-left:15px;margin-top: 10px;"><h5>Image URL</h5></label>
+    <input style="border: none; height: 170px;" disabled="disabled" />
+</div>
+</div>

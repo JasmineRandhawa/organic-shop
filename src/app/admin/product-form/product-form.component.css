@@ -1,0 +1,54 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.formStyle
+{
+  width: 585px; padding: 20px 20px 20px 20px;border: 1px solid #ccc; height: 470px;
+}
+
+.formCSS
+{
+  font-size: 17px;height: 35px;
+}
+.selectCSS
+{
+    font-size: 17px;color: blueviolet; height: 35px;
+}
+
+.priceCSS
+{
+    font-size: 17px;background-color: #ccc;padding-top: 5px;;
+}
+
+.select {
+    border: 1px solid #ccc;
+    overflow: hidden; 
+    height: 35px;    
+    width: 210px;
+    position: relative;
+    display: block;
+}
+
+select{       
+    height: 35px;
+    padding: 5px;
+    border: 0;
+    font-size: 16px;       
+    width: 210px;
+   -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.select:after {
+    content:"\f0dc";
+    font-family: FontAwesome;
+    color: darkgray;
+    padding: 6px 8px;
+    position: absolute; right: 0; top: 0;
+    background: #ccc;
+    z-index: 1;
+    text-align: center;
+    width: 10%;
+    height: 100%;      
+    pointer-events: none;
+    box-sizing: border-box;   
+}

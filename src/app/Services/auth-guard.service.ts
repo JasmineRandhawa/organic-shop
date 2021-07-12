@@ -15,9 +15,12 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(route :ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return   this.auth.user$.pipe(map((user: firebase.User | null) => {
-      console.log("User", user?.uid);
       if(user && user.uid) 
+      {
+        console.log(user);
         return true;
+      }
+      console.log("not auth");
       this.router.navigate(['/login'], { queryParams: { returnURL: state.url}});
       return  false;
     })); 

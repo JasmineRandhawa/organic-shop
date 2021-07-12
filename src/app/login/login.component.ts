@@ -1,7 +1,6 @@
 import { Router } from '@angular/router';
 import { AuthService } from './../Services/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -16,5 +15,7 @@ export class LoginComponent {
 
    login() {
     this.authService.login();
-   }
+    if(this.authService.isAuthenticated)
+      this.router.navigate(['/']);
+  }
 }
