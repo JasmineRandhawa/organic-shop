@@ -16,10 +16,8 @@ export class AdminAuthGuardService implements CanActivate {
       map((user: AppUser | null | undefined) => {
         if (user && user.isAdmin) 
         {
-          console.log(user);
           return true
         };
-        console.log("not admin");
         this.router.navigate(['/not-admin'], { queryParams: { returnURL: state.url } });
         return false;
       })

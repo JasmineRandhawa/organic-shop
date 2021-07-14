@@ -1,0 +1,47 @@
+h4{
+    color: palevioletred;font-weight: bold;font-size: x-large;
+}
+
+.tableCSS
+{
+    border: 2px solid #ccc;
+}
+
+table tr:nth-child(odd) td{
+    background-color: rgb(232, 243, 247);
+}
+
+th{
+    padding: 5px;
+    color: palevioletred;font-weight: bold;width: 200px; border: 2px solid #ccc;font-size: x-large;
+}
+
+td{
+    padding: 5px;
+    color: lightseagreen; border: 2px solid #ccc;text-align: center;width: 200px;
+}
+
+.imageCSS
+{
+    height:60px; width:60px;border-radius: 100%;
+}
+
+.imageURLCSS
+{
+    height: 100px;font-size: 12px;color: lightseagreen;
+}
+
+.editButtonCSS
+{
+    color: lightseagreen;
+    margin-left: 40px;;
+}
+
+.delButtonCSS
+{
+    border-radius: 100%;
+    color: red;
+    background-color: transparent;
+    border:none;
+}
+

@@ -24,9 +24,11 @@ import { AuthService } from './Services/auth.service';
 import { AdminAuthGuardService } from './Services/admin-auth-guard.service';
 import { environment } from 'src/environments/environment';
 import { ProductFormComponent } from './admin/product-form/product-form.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotAdminComponent } from './not-admin/not-admin.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ProductService } from './Services/product.service';
+import { CustomFormsModule } from 'ng2-validation';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
   imports: [
     BrowserModule,
     FormsModule,
+    CustomFormsModule,
+    ReactiveFormsModule ,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -61,15 +65,17 @@ import { NotFoundComponent } from './not-found/not-found.component';
         { path: 'check-out', component: CheckOutComponent , canActivate : [AuthGuardService]},
         { path: 'order-success', component: OrderSuccessComponent , canActivate : [AuthGuardService]},
         { path: 'my-orders', component: MyOrdersComponent , canActivate : [AuthGuardService]},
-        { path: 'admin/products', component: AdminProductsComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
         { path: 'admin/products/new', component: ProductFormComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
+        { path: 'admin/products/:id', component: ProductFormComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
+        { path: 'admin/products', component: AdminProductsComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
         { path: 'admin/orders', component: AdminOrdersComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
         { path: 'not-admin', component: NotAdminComponent , canActivate : [AuthGuardService]},
         { path: '**', component: NotFoundComponent  },
       ]
     )
   ],
-  providers: [UserService,AuthService,AuthGuardService, AdminAuthGuardService, CategoryService],
+  providers: [UserService,AuthService,AuthGuardService, AdminAuthGuardService, CategoryService,
+  ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
