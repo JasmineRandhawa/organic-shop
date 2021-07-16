@@ -34,29 +34,15 @@
     font-size: 15px;height: 35px;width: 140px;margin-left: 5px;display: inline;
 }
 
-.tableCSS
-{
-    border: 3px solid #ccc;
-}
-
-table tr:nth-child(odd) td{
-    background-color: rgb(232, 243, 247);
-}
-
-thead
-{
-    background-color: rgb(43, 236, 227);
-}
-
-th{
+.columnHeaderCSS {
     padding: 5px;
-    color: palevioletred;font-weight: bold;width: 200px; border: 3px solid #ccc;font-size: x-large;
+    color: palevioletred;font-weight: bold;width: 200px;font-size: large;
 }
 
-td{
+.columnCSS{
     padding: 5px;
     font-weight: 600;
-    color: rgba(32, 178, 171, 0.856); border: 3px solid #ccc;text-align: center;width: 200px;
+    color: rgba(32, 178, 171, 0.856); text-align: center;width: 200px;
 }
 
 .imageCSS
@@ -66,7 +52,7 @@ td{
 
 .imageURLCSS
 {
-    height: 100px;font-size: 13px;color: lightseagreen;
+    height: 100px;font-size: 13px;color: lightseagreen;word-wrap: break-word;cursor: pointer;
 }
 
 .editButtonCSS

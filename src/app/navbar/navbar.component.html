@@ -17,7 +17,9 @@
         <div ngbDropdownMenu class="dropdown-menu">
           <a ngbDropdownItem class="dropdown-item" routerLink="/my-orders">My Orders</a>
           <a   *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"
-            routerLink="/admin/products">Manage Products</a>
+            routerLink="/admin/products">Products</a>
+           <a   *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"
+            routerLink="/admin/manage-products">Manage Products</a>
           <a   *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"
             routerLink="/admin/orders">Manage Orders</a>
           <a ngbDropdownItem class="dropdown-item" (click)="logout()">Log Out</a>

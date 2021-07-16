@@ -1,4 +1,6 @@
 import { Category } from './category';
+
+/*Data Model for Product*/
 export interface Product
 {
     uId?:string,

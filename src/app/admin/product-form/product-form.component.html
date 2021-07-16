@@ -1,109 +1,108 @@
 <div class="mainDivCSS">
-    <h1 style="color: lightseagreen;">New Product</h1>
-    <div *ngIf="((title.invalid && title.touched) || 
-    (price.invalid && price.touched) || (imageURL.invalid && imageURL.touched)
-    ||(category.invalid && category.touched))"  >
-        <h4 class="errorSummaryCSS"><i class="fa fa-exclamation-triangle"></i>
-            Please correct below errors.</h4>
+    <h1>New Product</h1>
+
+     <!--Error Summary -->
+    <div *ngIf="((title.invalid && title.touched) ||  (price.invalid && price.touched) || 
+                 (category.invalid && category.touched) ||  (imageURL.invalid && imageURL.touched))">
+        <h4 class="errorSummaryCSS">
+            <i class="fa fa-exclamation-triangle"></i>
+            Please correct below errors.
+        </h4>
     </div>
-    <br>
-    <br>
-    <div class="formCSS">
+
+    <br /><br />
+
+    <!--Product Form -->
+    <div class="formDivCSS">
         <form #form="ngForm" ngForm (ngSubmit)="onSave(form.value)">
+            <!--Title -->
             <div class="form-group formGroupCSS">
-                <label for="title" style="float:left;">
-                    <h5>Title</h5>
-                </label>
-                <input #title="ngModel" name="title" [(ngModel)]="currentProduct.title"  id="title" class="form-control formControlCSS" type="text"
-                    required />
+                <label for="title" class="formLabelCSS">Title</label>
+                <input #title="ngModel" name="title" id="title" [(ngModel)]="currentProduct.title"  
+                       class="form-control formControlCSS" type="text" required />
                 <div *ngIf="title.touched && title.invalid" class="alert alert-danger">
-                    <div *ngIf="title.errors?.required">
-                        The Title field is a required.
-                    </div>
+                    <div *ngIf="title.errors?.required">The Title field is a required.</div>
                 </div>
             </div>
+
             <br />
+             <!--Price -->
             <div class="form-group formGroupCSS">
-                <label for="price" style="float:left;">
-                    <h5>Price</h5>
-                </label>
+                <label for="price" class="formLabelCSS">Price</label>
                 <div class="input-group ">
                     <span class="input-group-addon pricePrefixCSS">&nbsp; $ &nbsp;</span>
-                    <input #price="ngModel" [(ngModel)]="currentProduct.price" name="price" id="price" class="form-control formControlCSS priceCSS"
-                        type="number" required [max]="100" [min]="1" />
+                    <input #price="ngModel" name="price" id="price" [(ngModel)]="currentProduct.price" 
+                           class="form-control formControlCSS priceCSS" type="number" 
+                           required [max]="100" [min]="1" />
                     <span class="input-group-addon pricePrefixCSS">&nbsp; .00&nbsp;</span>
                 </div>
                 <div *ngIf="price.touched && price.invalid" class="alert alert-danger">
-                    <div *ngIf="price.errors?.required">
-                        The price is a required field.
-                    </div>
+                    <div *ngIf="price.errors?.required">The price is a required field. </div>
                     <div *ngIf="price.errors?.max || price.errors?.min">
                         The Price field should be in range 1$ and 100$
                     </div>
                 </div>
             </div>
+
             <br />
+             <!--Category -->
             <div class="form-group formGroupCSS">
-                <label for="category" style="float:left;">
-                    <h5>Category</h5>
-                </label>
+                <label for="category" class="formLabelCSS">Category</label>
                 <label class="select">  
-                    <select #category="ngModel" [(ngModel)]="selectedCategory"
-                    name="category" id="category" (change)="onCategoryChange(category.value)"
-                        class="form-control formControlCSS selectCSS" required>
-                        <option *ngFor="let c of (categories$|async) as categories" 
-        
-                       class="selectOptionCSS" [ngValue]="c">
-                          {{c.name}}</option>
+                    <select #category="ngModel"  name="category" id="category" [(ngModel)]="currentProduct.category.name"
+                            class="form-control formControlCSS selectCSS" required
+                            (change) ="onCategoryChange(category.value)">
+                        <option *ngFor="let c of (categories$|async) as categories" [ngValue]="c.name"
+                                 class="selectOptionCSS" >
+                                {{c.name}}
+                        </option>
                     </select>
                 </label>
                 <div *ngIf="category.touched && category.invalid" class="alert alert-danger">
-                    <div *ngIf="category.errors?.required">
-                        The Category field is a required.
-                    </div>
+                    <div *ngIf="category.errors?.required">The Category field is a required. </div>
                 </div>
             </div>
+
             <br />
+            <!--Image URL -->
             <div class="form-group formGroupCSS">
-                <label style="float:left;">
-                    <h5>Image URL</h5>
-                </label>
-                <textarea aria-multiline="true" rows="4" #imageURL="ngModel" [(ngModel)]="currentProduct.imageURL"
-                 name="imageURL" id="imageURL"
-                    type="text" class="form-control formControlCSS imageURLCSS" required url></textarea>
+                <label for="imageURL" class="formLabelCSS">Image URL</label>
+                <textarea #imageURL="ngModel" name="imageURL" id="imageURL" [(ngModel)]="currentProduct.imageURL"
+                          class="form-control formControlCSS imageURLCSS" type="text" 
+                          aria-multiline="true" rows="4" required url>
+                </textarea>
                 <div *ngIf="imageURL.touched && imageURL.invalid" class="alert alert-danger">
-                    <div *ngIf="imageURL.errors?.required">
-                        The Image URL field is a required.
-                    </div>
-                    <div *ngIf="imageURL.errors?.url">
-                        The Image URL is invalid.
-                    </div>
+                    <div *ngIf="imageURL.errors?.required">The Image URL field is a required. </div>
+                    <div *ngIf="imageURL.errors?.url"> The Image URL is invalid.</div>
                 </div>
             </div>
+
             <br />
+            <!--Save button -->
             <div class="form-group formGroupCSS">
                 <button type="submit" class="btn buttonCSS" [disabled]="form.invalid" >Save</button>
             </div>
         </form>
     </div>
+
     &nbsp;&nbsp;
-    <div class="subDivCSS">
+
+    <!--Product Details panel -->
+    <div class="detailsDivCSS">
+
+        <!--Render Image -->
         <img *ngIf="imageURL.value && imageURL.valid" src="{{imageURL.value}}" class="imageCSS" />
-        <div *ngIf="!imageURL.value ||  imageURL.invalid" class="imageCSS pCSS"> Image not available</div>
-        <div *ngIf="title.value || price.value || category.value" class="detailsCSS">
-            <div>
-                <h4>{{currentProduct.title}}</h4>
-            </div>
+        <div *ngIf="!imageURL.value ||  imageURL.invalid" class="alterImageCSS"> Image not available</div>
+        
+         <!--Other Product Details-->
+        <div *ngIf="title.value || price.value || category.value" class="subDivCSS">
+            <span class="detailCSS">{{currentProduct.title}}</span>
             <br />
             <br />
-            <div>
-                <h4>{{currentProduct.price|currency:'USD':'$'}}</h4>
-            </div>
+            <span class="detailCSS">{{currentProduct.price|currency:'USD':'$'}}</span>
             <br />
             <br />
-            <div>
-                <h4>{{selectedCategory.name }}</h4>
-            </div>
+            <span class="detailCSS">{{currentProduct.category.name }}</span>
         </div>
     </div>
 </div>

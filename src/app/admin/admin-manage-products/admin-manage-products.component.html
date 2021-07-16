@@ -1,0 +1,115 @@
+<!--Add New Product link-->
+<a routerLink="/admin/products/new" class="btn buttonCSS">New Product</a>
+
+<br />
+<br />
+<br />
+<br />
+
+<div>
+
+    <!--No Products message-->
+    <span class="messageLabel" *ngIf="products && products.length === 0"> No products available </span>
+
+    <!--Search Products panel-->
+    <div *ngIf="products && products.length > 0" class="searchDivCSS">
+        <span class="searchLabelCSS">Search Product</span>
+        <span class="filterTitleLabelCSS">Title</span>
+        <input #titleQuery class="form-control filterCSS" 
+               (keyup)="filterProducts(titleQuery.value , categoryQuery.value)" />
+        <span class="filterCategoryLabelCSS">Category</span>
+        <input #categoryQuery class="form-control filterCSS" 
+               (keyup)="filterProducts(titleQuery.value ,categoryQuery.value)" />
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <data-table [showTitle]="false" 
+                [itemCount]="itemsCount" 
+                [items]="items" 
+                [substituteRows]="false"
+                [sortAsc]="true"
+                [indexColumn]="false"
+                [showReloading]="true"
+                [pagination]="true"
+                [autoReload]="true"
+                [title]="'Products'"
+                [selectOnRowClick]="false"
+                [pageLimits]="[5,10,15,25,50,100]"
+                [limit]= 5 
+                *ngIf="products && products.length > 0"  
+                (reload)="reloadItems($event)"
+    >
+
+        <data-table-column [property]="'imageURL'" [header]="'Product'" [sortable]="false" [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span class="columnHeaderCSS">Product</span>
+            </ng-template>
+
+            <ng-template #dataTableCell let-item="item">
+                <img [src]="item.imageURL" class="imageCSS" />
+            </ng-template>
+        </data-table-column>
+
+        <data-table-column class="columnHeaderCSS" [property]="'title'" [header]="'Title'" [sortable]="true" [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span class="columnHeaderCSS">Title</span>
+            </ng-template>
+
+            <ng-template #dataTableCell let-item="item">
+                <span class="columnCSS">{{item.title}}</span>
+            </ng-template>
+        </data-table-column>
+
+        <data-table-column class="columnHeaderCSS" [property]="'price'" [header]="'Price'" [sortable]="true" [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span class="columnHeaderCSS">Price</span>
+            </ng-template>
+
+            <ng-template #dataTableCell let-item="item">
+                <span class="columnCSS">{{item.price | currency:'USD' : '$'}}</span>
+            </ng-template>
+        </data-table-column>
+
+        <data-table-column class="columnHeaderCSS" [property]="'category.name'" [header]="'Category'" [sortable]="true" [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span class="columnHeaderCSS">Category</span>
+            </ng-template>
+
+            <ng-template #dataTableCell let-item="item">
+                <span class="columnCSS">{{item.category.name}}</span>
+            </ng-template>
+        </data-table-column>
+
+        <data-table-column class="columnHeaderCSS" [property]="'imageURL'" [header]="'Image URL'" [sortable]="false" [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span class="columnHeaderCSS">Image URL</span>
+            </ng-template>
+
+            <ng-template #dataTableCell let-item="item">
+                <a (click)="onNavigate(item.imageURL)" class="imageURLCSS">{{item.imageURL}}</a>
+            </ng-template>
+        </data-table-column>
+
+        <data-table-column class="columnHeaderCSS" [property]="'uId'" [header]="'Action'" [sortable]="false" [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span class="columnHeaderCSS">Actions</span>
+            </ng-template>
+
+            <ng-template #dataTableCell let-item="item">
+                <!--Edit Product link-->
+                <button class="btn btn-link editButtonCSS" [routerLink]="['/admin/products/', item.uId]">
+                    <span><i class="fa fa-edit fa-2x"></i></span>
+                </button>
+                <!--Delete Product link-->
+                <button class="btn delButtonCSS" (click)="onDelete(item)">
+                    <span><i class="fa fa-trash fa-2x"></i></span>
+                </button>
+            </ng-template>
+        </data-table-column>
+
+    </data-table>
+
+</div>

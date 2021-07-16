@@ -1,9 +1,9 @@
 import { Router } from '@angular/router';
-import { AuthService } from './../Services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })

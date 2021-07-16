@@ -2,34 +2,36 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 import { compare , isEmpty , showAlertOnAction } from 'src/app/utility/helper';
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { DataTableParams, DataTableResource } from 'angular5-data-table'
+
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'admin-products',
-  templateUrl: './admin-products.component.html',
-  styleUrls: ['./admin-products.component.css']
+  selector: 'admin-manage-products',
+  templateUrl: './admin-manage-products.component.html',
+  styleUrls: ['./admin-manage-products.component.css']
 })
 
-/*----Products table Component----*/
-export class AdminProductsComponent {
+/*----Products DataTable Component with pagination sorting----*/
+export class AdminManageProductsComponent implements OnDestroy {
 
   /*----property declarations----*/ 
-  products$: Observable<Product[]>;
-  products: Product[] | undefined;
-  productsCount:number|undefined;
+  products: Product[] | undefined =[];
+  items: Product[] = [];
+  itemsCount:number = 0;
+  subscription:Subscription;
+  tableResource:DataTableResource<Product> | undefined;
 
   /*----Initialize properties from firebase database----*/ 
   constructor(private productService: ProductService, private router:Router ) {
 
-    // get list of products from firebase to populate the table
-    this.products$ = this.productService.getAll().pipe(map(changes => {
-                        this.products = [];
-                        this.productsCount = 0;
 
-                        return changes.map((p: any) => {
+    // get list of products from firebase to populate the table
+    this.subscription = this.productService.getAll().subscribe(changes => {
+                        this.products = [];
+                        changes.map((p: any) => {
                             let product = {
                               uId: p.payload.key,
                               title: p.payload.toJSON()['title'],
@@ -37,14 +39,40 @@ export class AdminProductsComponent {
                               category: p.payload.toJSON()['category'],
                               imageURL: p.payload.toJSON()['imageURL']
                             } as Product
-
                             this.products?.push(product);
-                            this.productsCount = this.products?.length;
-                            return (product);
+                                // initialize table
+                            if(this.products)
+                            {
+                              this.initializeDataTable(this.products);
+                            }
                           }
                         )
-                    }));
+                    });   
   }
+
+  /*----initializetable or reload datatable after search filters----*/ 
+  private initializeDataTable(products:Product[])
+  {
+    this.tableResource = new DataTableResource(products);
+    this.tableResource?.query({offset:0})
+                      .then(items=> this.items = items);
+    this.tableResource?.count()
+                      .then(count=> this.itemsCount = count);
+  }
+
+  /*----reload datatable after rezeing, pagination or sorting----*/ 
+  reloadItems(params:DataTableParams) : void 
+  {
+    if(!this.tableResource) return;
+
+    this.tableResource?.query(params)
+                       .then(items=> this.items = items);
+  }
+
+  /*----navigate to image in new tab----*/ 
+  onNavigate(imageURL:string){
+    window.open(imageURL, "_blank");
+}
 
   /*----Filter Products table on Search----*/ 
   filterProducts(titleFilter: string , categoryFilter: string) {
@@ -64,7 +92,9 @@ export class AdminProductsComponent {
                                                 compare(product.title , titleFilter) &&
                                                   (compare(product.category.name , categoryFilter) || 
                                                   compare(product.category.uId , categoryFilter)));
-      this.products$ = of(filteredProducts);
+      
+      
+        this.initializeDataTable(filteredProducts);                                          
     }
   }
 
@@ -76,5 +106,11 @@ export class AdminProductsComponent {
       let isDeleted = await this.productService.delete(product.uId);
       showAlertOnAction("Product" , isDeleted , "delete", this.router,"/admin/products")
     }
+  }
+
+  
+  /*----unsubscribe from product service on component destruction----*/ 
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

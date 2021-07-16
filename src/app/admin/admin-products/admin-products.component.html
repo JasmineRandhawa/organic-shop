@@ -1,27 +1,60 @@
-<a routerLink="/admin/products/new" class="btn btn-primary"  style="float:left;">New Product</a>
+<!--Add New Product link-->
+<a routerLink="/admin/products/new" class="btn buttonCSS">New Product</a>
+
 <br />
 <br />
-<div *ngIf="(products$ | async) as products" >
-<h4  *ngIf="products.length === 0" > No products available  </h4>
-<table *ngIf="products.length > 0" class="tableCSS">
-    <thead *ngIf = "products.length > 0">
-        <th>Product</th>
-        <th>Title</th>
-        <th>Price</th>
-        <th>Category</th>
-        <th>Image URL</th>
-        <th>Action</th>
-    </thead>
-    <tr *ngFor = "let product of products">
-        <td><img [src]="product.imageURL" class="imageCSS" /></td>
-        <td>{{product.title}}</td>
-        <td>{{product.price | currency:'USD' : true}}</td>  
-        <td>{{product.category.name}}</td>
-        <td><a href="{{product.imageURL}}" class="imageURLCSS">{{product.imageURL}}</a></td>
-        <td>
-            <button class="btn btn-link editButtonCSS" [routerLink]="['/admin/products/', product.uId]" >Edit</button> &nbsp;&nbsp;
-            <button class="btn delButtonCSS" (click)="onDelete(product)">X</button>
-        </td>
-    </tr>
-</table>
+
+<div *ngIf="(products$ | async) as products">
+
+    <!--No Products message-->
+    <span class="messageLabel" *ngIf="products.length === 0"> No products available </span>
+
+    <!--Search Products panel-->
+    <div *ngIf="productsCount && productsCount > 0" class="searchDivCSS">
+        <span class="searchLabelCSS">Search Product</span>
+        <span class="filterTitleLabelCSS">Title</span>
+        <input #titleQuery class="form-control filterCSS" 
+               (keyup)="filterProducts(titleQuery.value , categoryQuery.value)" />
+        <span class="filterCategoryLabelCSS">Category</span>
+        <input #categoryQuery class="form-control filterCSS" 
+               (keyup)="filterProducts(titleQuery.value ,categoryQuery.value)" />
+    </div>
+
+    <br>
+    <br>
+
+    <!---Products Table--->
+    <table *ngIf="products.length > 0" class="tableCSS">
+        <!---column headers--->
+        <thead *ngIf="products.length > 0">
+            <th>Product</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Image URL</th>
+            <th>Action</th>
+        </thead>
+
+        <!---rows--->
+        <tr *ngFor="let product of products">
+
+            <td><img [src]="product.imageURL" class="imageCSS" /></td>
+            <td>{{product.title}}</td>
+            <td>{{product.price | currency:'USD' : true}}</td>
+            <td>{{product.category.name}}</td>
+            <td><a href="{{product.imageURL}}" class="imageURLCSS">{{product.imageURL}}</a></td>
+            <td>
+                <!--Edit Product link-->
+                <button class="btn btn-link editButtonCSS" [routerLink]="['/admin/products/', product.uId]">
+                    <span><i class="fa fa-edit fa-2x"></i></span>
+                </button>
+                 <!--Delete Product link-->
+                <button class="btn delButtonCSS" (click)="onDelete(product)">
+                    <span><i class="fa fa-trash fa-2x"></i></span>
+                </button>
+            </td>
+
+        </tr>
+        
+    </table>
 </div>
