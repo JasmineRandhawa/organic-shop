@@ -27,7 +27,6 @@ export class AdminManageProductsComponent implements OnDestroy {
   /*----Initialize properties from firebase database----*/ 
   constructor(private productService: ProductService, private router:Router ) {
 
-
     // get list of products from firebase to populate the table
     this.subscription = this.productService.getAll().subscribe(changes => {
                         this.products = [];
