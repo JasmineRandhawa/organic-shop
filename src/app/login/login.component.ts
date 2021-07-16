@@ -1,6 +1,7 @@
-import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import { Component} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -8,14 +9,22 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 
+/*---Login Component---*/
 export class LoginComponent {
 
-  constructor(private authService: AuthService,private router:Router) {
+  /*---Inject auth service and router---*/
+  constructor(private authService: AuthService, private router:Router) {
    }
 
-   login() {
+  /*---Login with Google account---*/
+
+  login() {
+
     this.authService.login();
+
+    //once user is logged in , redirect to home page
     if(this.authService.isAuthenticated)
       this.router.navigate(['/']);
+
   }
 }

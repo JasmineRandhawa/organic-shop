@@ -1,28 +1,57 @@
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+ <!--navigation Bar-->
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+
+    <!--Application Title-->
     <a class="navbar-brand active current" [routerLink]="appUser  ?  ['/'] :  ['/login']">
-    <h3>OShop</h3></a>
+       <h3>OShop</h3>
+    </a>
+
+  <!--Navbar Menu Links-->
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
+      
+       <!--Shopping cart link-->
       <li *ngIf="appUser" class="nav-item">
         <a class="nav-link" routerLink="/shopping-cart"><span><i class="fa fa-shopping-cart fa-1x"></i>
         <span  id="cartCount" class="badge badge-warning">10</span></span></a>
       </li>
-        <li *ngIf="appUser==null" class="nav-item">
-          <a class="nav-link" routerLink="/login"><span>Login</span></a>
-        </li>
+
+      <!--Login link-->
+      <li *ngIf="appUser==null" class="nav-item">
+        <a class="nav-link" routerLink="/login"><span>Login</span></a>
+      </li>
+
+       <!--Username Dropdown link-->
       <li *ngIf="appUser" ngbDropdown class="nav-item dropdown">
+
+         <!--Logged In Username-->
         <a ngbDropdownToggle class="nav-link dropdown-toggle" data-toggle="dropdown">
-        <span>{{appUser.name }}</span></a>
+          <span>{{appUser.name }}</span>
+        </a>
+
+        <!--Dropdown options-->
         <div ngbDropdownMenu class="dropdown-menu">
-          <a ngbDropdownItem class="dropdown-item" routerLink="/my-orders">My Orders</a>
-          <a   *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"
-            routerLink="/admin/products">Products</a>
-           <a   *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"
-            routerLink="/admin/manage-products">Manage Products</a>
-          <a   *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"
-            routerLink="/admin/orders">Manage Orders</a>
-          <a ngbDropdownItem class="dropdown-item" (click)="logout()">Log Out</a>
+
+          <a ngbDropdownItem class="dropdown-item" routerLink="/my-orders">
+              My Orders
+          </a>
+
+          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"routerLink="/admin/products">
+              Products
+          </a>
+
+          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"routerLink="/admin/manage-products">
+              Manage Products
+          </a>
+
+          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item" routerLink="/admin/orders">
+              Manage Orders
+          </a>
+
+          <a ngbDropdownItem class="dropdown-item" (click)="logout()">
+              Log Out
+          </a>
+
         </div>
       </li>
     </ul>
