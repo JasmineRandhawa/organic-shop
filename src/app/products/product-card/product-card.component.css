@@ -1,0 +1,28 @@
+.cardDivCSS
+{
+    border: 1px solid #ccc;
+}
+
+.imageCSS
+{
+    height:200px; width:230px;
+}
+
+.card{
+    margin:10px;
+}
+    
+.card-footer
+{
+    padding: 0;
+}
+
+.buttonCSS
+{
+    background-color: lightseagreen;
+    width: 240px;
+    color: white;
+    font-weight: bold;
+}
+
+

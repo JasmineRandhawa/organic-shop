@@ -34,7 +34,9 @@ import { NotAdminComponent } from './not-admin/not-admin.component';
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { ProductFormComponent } from './admin/product-form/product-form.component';
-import { AdminManageProductsComponent } from './admin/admin-manage-products/admin-manage-products.component'
+import { AdminManageProductsComponent } from './admin/admin-manage-products/admin-manage-products.component';
+import { ProductFilterComponent } from './products/product-filter/product-filter.component';
+import { ProductCardComponent } from './products/product-card/product-card.component'
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { AdminManageProductsComponent } from './admin/admin-manage-products/admi
     AdminProductsComponent,
     AdminOrdersComponent,
     ProductFormComponent,
-    AdminManageProductsComponent
+    AdminManageProductsComponent,
+    ProductFilterComponent,
+    ProductCardComponent
   ],
   imports: [
     BrowserModule,
@@ -72,8 +76,8 @@ import { AdminManageProductsComponent } from './admin/admin-manage-products/admi
     RouterModule.forRoot(
       [
         { path: '', component: HomeComponent   },
-        { path: 'login', component: LoginComponent  },
-        { path: 'products', component: ProductsComponent },
+        { path: 'login', component: LoginComponent },
+        { path: 'products', component: ProductsComponent , canActivate : [AuthGuardService]},
         { path: 'shopping-cart', component: ShoppingCartComponent , canActivate : [AuthGuardService] },
         { path: 'check-out', component: CheckOutComponent , canActivate : [AuthGuardService]},
         { path: 'order-success', component: OrderSuccessComponent , canActivate : [AuthGuardService]},

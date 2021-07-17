@@ -10,15 +10,20 @@
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
       
-       <!--Shopping cart link-->
-      <li *ngIf="appUser" class="nav-item">
-        <a class="nav-link" routerLink="/shopping-cart"><span><i class="fa fa-shopping-cart fa-1x"></i>
-        <span  id="cartCount" class="badge badge-warning">10</span></span></a>
-      </li>
-
       <!--Login link-->
       <li *ngIf="appUser==null" class="nav-item">
         <a class="nav-link" routerLink="/login"><span>Login</span></a>
+      </li>
+
+      <!--Products list link-->
+      <li *ngIf="appUser" class="nav-item">
+        <a class="nav-link" routerLink="/products"><span>Products</span></a>
+      </li>
+
+      <!--Shopping cart link-->
+      <li *ngIf="appUser" class="nav-item">
+        <a class="nav-link" routerLink="/shopping-cart"><span><i class="fa fa-shopping-cart fa-1x"></i>
+        <span  id="cartCount" class="badge badge-warning">10</span></span></a>
       </li>
 
        <!--Username Dropdown link-->
@@ -37,11 +42,11 @@
           </a>
 
           <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"routerLink="/admin/products">
-              Products
+              Manage Products
           </a>
 
           <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"routerLink="/admin/manage-products">
-              Manage Products
+              Manage Products (Pag)
           </a>
 
           <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item" routerLink="/admin/orders">

@@ -7,6 +7,7 @@
     background-color: lightseagreen;
     color: white;
     float: left;
+    font-weight: bold;
 }
 
 .searchDivCSS
@@ -21,12 +22,12 @@
 
 .filterTitleLabelCSS
 {
-    font-size: 15px;color:lightseagreen; margin-left: 5px;margin-right: 10px;
+    font-size: 15px;color:lightseagreen; margin-left: 5px;margin-right: 10px;font-weight: 600;
 }
 
 .filterCategoryLabelCSS
 {
-    font-size: 15px;color:lightseagreen; margin-left: 10px;margin-right: 10px;
+    font-size: 15px;color:lightseagreen; margin-left: 10px;margin-right: 10px;font-weight: 600;
 }
 
 .filterCSS
@@ -45,7 +46,7 @@ table tr:nth-child(odd) td{
 
 thead
 {
-    background-color: rgb(43, 236, 227);
+    background-color: rgb(176, 241, 238);
 }
 
 th{
@@ -55,8 +56,8 @@ th{
 
 td{
     padding: 5px;
-    font-weight: 600;
-    color: rgba(32, 178, 171, 0.856); border: 3px solid #ccc;text-align: center;width: 200px;
+    font-weight: 700;
+    color: rgb(60, 179, 173); border: 3px solid #ccc;text-align: center;width: 200px;
 }
 
 .imageCSS

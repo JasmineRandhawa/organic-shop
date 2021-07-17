@@ -1,0 +1,25 @@
+.sticky-top
+{
+    top:80px;
+}
+
+.listCSS
+{
+    float: left;
+    width: 220px;
+    border: 1px solid #ccc;
+}
+
+.active
+{
+    background-color: rgb(228, 194, 204);
+    border: none;
+}
+
+.listItemLabelCSS
+{
+    float: left;
+    text-align: left;
+    font-weight: bold;
+    color: rgb(60, 179, 173);
+}

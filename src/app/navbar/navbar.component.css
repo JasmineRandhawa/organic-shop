@@ -4,7 +4,7 @@
 }
 .dropdown-item
 {
-    cursor: pointer;color: lightseagreen;font-size: medium;
+    cursor: pointer;color: lightseagreen;font-size: medium;font-weight: 600;
 }
 
 #cartCount
