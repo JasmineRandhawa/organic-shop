@@ -10,6 +10,7 @@ import { isEmpty,getCurrentDate } from 'src/app/utility/helper';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { take } from 'rxjs/operators';
+import { ɵInternalFormsSharedModule } from '@angular/forms';
 
 @Injectable()
 
@@ -50,13 +51,6 @@ export class ShoppingCartService {
     if(cartUId)
       localStorage.setItem('cartUId', cartUId);
     return cartUId;
-  }
-
-  /*---Get Shopping cart from firebase database---*/
-  getCart() 
-  {
-    let cartUId =  this.getCartId() + "";
-    return this.db.object('/shopping-carts/'+cartUId).snapshotChanges();
   }
 
   /*---Get Shopping cart Item based on cartUId and product's unique Id---*/

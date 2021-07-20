@@ -1,4 +1,3 @@
-
 <!--Product Card-->
 <div class="card cardDivCSS" style="width: 15rem;">
     <img class="card-img-top imageCSS" src="{{product?.imageURL}}" alt="Image not available">
@@ -7,6 +6,11 @@
         <p class="card-text">{{ product?.price | currency : 'USD':"$"}}</p>
     </div>
     <div class="card-footer">
-        <button class="btn buttonCSS" (click)="addToCart(product)">Add to Cart</button>
+        <button *ngIf ="!shoppingCartItem" class="btn buttonCSS" (click)="addToCart(product)">Add to Cart</button>
+        <div *ngIf="shoppingCartItem">
+            <button  *ngIf ="shoppingCartItem" class="btn buttonCartCSS" (click)="removeFromCart(product)">-</button>
+            <span class="quantityCSS">{{shoppingCartItem?.quantity}}</span>
+            <button *ngIf ="shoppingCartItem" class="btn buttonCartCSS" (click)="addToCart(product)">+</button>
+        </div>
     </div>
 </div>

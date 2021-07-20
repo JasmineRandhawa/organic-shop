@@ -78,7 +78,7 @@ export class ProductsComponent implements OnInit , OnDestroy{
     this.products$ = of(filteredProducts);
   }
 
-  /*----unsubscribe from product service on component destruction----*/ 
+  /*----unsubscribe from product category service on component destruction----*/ 
   ngOnDestroy(): void {
     this.categorySubscription?.unsubscribe();
   }
