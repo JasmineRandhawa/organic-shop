@@ -1,1 +1,1 @@
-export const CATEGORY_ALL="ALL";
+export const CATEGORY_ALL="All";

@@ -3,7 +3,7 @@
     <div *ngIf="(categories$ | async) as categories">
 
         <ul class="list-group listCSS">
-            <li routerLink="/products" [class.active]="category==defaultCategory"
+            <li routerLink="/products" [class.active]="category==defaultCategory" 
                 class="list-group-item list-group-item-action">
                 <a class="btn listItemLabelCSS">{{defaultCategory}}</a>
             </li>

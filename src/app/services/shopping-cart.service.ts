@@ -1,4 +1,3 @@
-import { Product } from '../models/product';
 import { AppUser } from '../models/app-user';
 import { LoggedInUser } from './../models/logged-in-user';
 import { ShoppingCartItem } from './../models/shopping-cart-item';
@@ -7,25 +6,42 @@ import { ShoppingCart } from '../models/shopping-cart';
 import { AuthService } from './auth.service';
 import { isEmpty,getCurrentDate } from 'src/app/utility/helper';
 
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { take } from 'rxjs/operators';
-import { ɵInternalFormsSharedModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 
 /*--Shopping Cart Service to get/save/update/delete shopping-cart data from firebase database--*/
-export class ShoppingCartService {
+export class ShoppingCartService  implements OnDestroy{
 
   user: LoggedInUser | undefined;
+  cartSubscription:Subscription|undefined;
+  cartUId:string|undefined;
 
   /*---Inject angular fire database--*/
   constructor(private db: AngularFireDatabase, private authService:AuthService) {
-   this.authService.appUser$.pipe(take(1)).subscribe((user:AppUser | null)=>
+    this.authService.appUser$.pipe(take(1)).subscribe((user:AppUser | null)=>
                       {
                         if(user)
                           this.user = {uId : user.uId , name:user.name}
                       });
+    this.cartSubscription = this.db.list('shopping-carts').snapshotChanges()
+                                    .subscribe((cartsSnapshot: any) => {
+                                      cartsSnapshot.map((cartSnapshot:any)=>
+                                      {
+                                        if(cartSnapshot.key && this.user?.uId)
+                                        {
+                                          let user = cartSnapshot.payload.toJSON()['user'];
+                                          if(this.user == user['uId'])
+                                              this.cartUId= cartSnapshot.key;
+                                          let cartUId = localStorage.getItem('cartUId');
+                                          if(!cartUId)
+                                            localStorage.setItem('cartUId',cartSnapshot.key);
+                                          }
+                                      });
+                                    });
   }
 
   /*---create new cart in firebase database--*/
@@ -60,37 +76,32 @@ export class ShoppingCartService {
   }
 
   /*---Get Shopping cart Item based on cartUId and product's unique Id---*/
-  getCartItem(cartUId :string, itemUId:string) 
+  getCartItem(cartUId :string,productUId :string) 
   {
-    return this.getItem(cartUId,itemUId).snapshotChanges();
+    return this.db.object('/shopping-carts/'+cartUId + "/items/"+ productUId).snapshotChanges();
   }
 
  /*---add product shopping cart to firebase database--*/
-  async addToCart(product:Product) {
+  async addToCart(item:ShoppingCartItem) {
     let cartUId = await this.getCartId() + "";
 
     //get item from shopping cart table items 
-    let item$ = this.getItem(cartUId, product.uId || "");
-    item$.snapshotChanges()
-         .pipe(take(1))
-         .subscribe((itemSnapShot:any)=>
-            {
-              //if item exists , add the item
-              if(itemSnapShot.payload.toJSON())
-              {
-                let itemJSON = itemSnapShot.payload.toJSON();
-                let item = { product : itemJSON['product'],
-                              quantity: Number(itemJSON['quantity'])+1
-                            } as ShoppingCartItem;
-                item$.update(item);
-              }
-              //if item does not exists, update the item
-              else
-              {
-                  let item = {product : product, quantity:1} as ShoppingCartItem;
-                  item$.set(item );
-              }
-         });
+    let item$ = this.getItem(cartUId, item.product.uId || "");
+    item$.set(item );
+  }
+
+  updateCart(item:ShoppingCartItem)
+  {
+    let cartUId = localStorage.getItem('cartUId');
+    let item$ = this.getItem(cartUId||"", item.product.uId || "");
+    item$.update(item);
+  }
+
+  removeFromCart(itemUId:string)
+  {
+    let cartUId = localStorage.getItem('cartUId');
+    let item$ = this.getItem(cartUId||"", itemUId || "");
+    item$.remove();
   }
 
   /*---delete existing shopping cart from firebase database based on shopping-cart's unique Id--*/
@@ -99,5 +110,9 @@ export class ShoppingCartService {
                   .remove()
                   .then(()=>true)
                   .catch(()=>false);
+  }
+
+  ngOnDestroy(): void {
+    this.cartSubscription?.unsubscribe();
   }
 }

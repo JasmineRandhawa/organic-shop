@@ -6,20 +6,20 @@
     </div>
 
      <!--Product list-->
-    <div class="col" *ngIf="(products$ | async) as products">
+    <div class="col" *ngIf="filteredProducts">
 
          <!--Product list based on category filter-->
-        <div class="row" *ngIf="products && products.length > 0">
-            <ng-container *ngFor="let p of products let i = index;">
+        <div class="row" *ngIf="filteredProducts && filteredProducts.length > 0">
+            <ng-container *ngFor="let p of filteredProducts let i = index;">
                 <div class="col">
-                   <product-card [product]="p"></product-card>
+                   <product-card [product]="p" [quantity]="getItem(p.uId)"></product-card>
                 </div>
                 <div *ngIf="(i+1)%3===0" class="w-100"></div>
             </ng-container>
         </div>
 
         <!--Message when no products found based on category filter-->
-        <div class="row" *ngIf="products && products.length == 0">
+        <div class="row" *ngIf="filteredProducts && filteredProducts.length == 0">
             <span class="noRecordsMessageCSS">No Products found</span>
         </div>
     </div>

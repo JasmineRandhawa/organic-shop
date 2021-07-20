@@ -6,11 +6,11 @@
         <p class="card-text">{{ product?.price | currency : 'USD':"$"}}</p>
     </div>
     <div class="card-footer">
-        <button *ngIf ="!shoppingCartItem" class="btn buttonCSS" (click)="addToCart(product)">Add to Cart</button>
-        <div *ngIf="shoppingCartItem">
-            <button  *ngIf ="shoppingCartItem" class="btn buttonCartCSS" (click)="removeFromCart(product)">-</button>
-            <span class="quantityCSS">{{shoppingCartItem?.quantity}}</span>
-            <button *ngIf ="shoppingCartItem" class="btn buttonCartCSS" (click)="addToCart(product)">+</button>
+        <button *ngIf ="!quantity" class="btn buttonCSS" (click)="addToCart(product)">Add to Cart</button>
+        <div *ngIf="quantity">
+            <button  *ngIf ="quantity" class="btn buttonCartCSS" (click)="reduceUpdateCart(product)">-</button>
+            <span class="quantityCSS">{{quantity}}</span>
+            <button *ngIf ="quantity" class="btn buttonCartCSS" (click)="addUpdateCart(product)">+</button>
         </div>
     </div>
 </div>
