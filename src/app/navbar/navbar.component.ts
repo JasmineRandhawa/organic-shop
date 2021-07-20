@@ -1,7 +1,7 @@
 import { AppUser } from '../models/app-user';
 import { AuthService } from '../services/auth.service';
 
-import { Component} from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 @Component({
   selector: 'navbar',
@@ -14,6 +14,7 @@ export class NavbarComponent {
 
   /*----class property declaration----*/ 
   appUser: AppUser | undefined;
+  @Input('cart-items-count') cartItemsCount:number|undefined ;
 
   /*----Inject auth service----*/ 
   constructor(private auth: AuthService) {

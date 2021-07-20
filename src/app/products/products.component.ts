@@ -72,7 +72,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.categorySubscription = this.route.queryParamMap.subscribe(params => {
       this.category = (!isEmpty(params.get('category')) ? params.get('category')
         : this.defaultCategory) || this.defaultCategory
-      console.log(this.category);
       this.filterProducts(this.category);
     });
   }

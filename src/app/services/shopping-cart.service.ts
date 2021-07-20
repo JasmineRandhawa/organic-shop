@@ -27,21 +27,11 @@ export class ShoppingCartService  implements OnDestroy{
                         if(user)
                           this.user = {uId : user.uId , name:user.name}
                       });
-    this.cartSubscription = this.db.list('shopping-carts').snapshotChanges()
-                                    .subscribe((cartsSnapshot: any) => {
-                                      cartsSnapshot.map((cartSnapshot:any)=>
-                                      {
-                                        if(cartSnapshot.key && this.user?.uId)
-                                        {
-                                          let user = cartSnapshot.payload.toJSON()['user'];
-                                          if(this.user == user['uId'])
-                                              this.cartUId= cartSnapshot.key;
-                                          let cartUId = localStorage.getItem('cartUId');
-                                          if(!cartUId)
-                                            localStorage.setItem('cartUId',cartSnapshot.key);
-                                          }
-                                      });
-                                    });
+  }
+
+  getAll()
+  {
+    return this.db.list('shopping-carts').snapshotChanges();
   }
 
   /*---create new cart in firebase database--*/

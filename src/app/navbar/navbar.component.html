@@ -23,7 +23,8 @@
       <!--Shopping cart link-->
       <li *ngIf="appUser" class="nav-item">
         <a class="nav-link" routerLink="/shopping-cart"><span><i class="fa fa-shopping-cart fa-1x"></i>
-        <span  id="cartCount" class="badge badge-warning">10</span></span></a>
+        <span  *ngIf="cartItemsCount && cartItemsCount>0" id="cartCount" class="badge badge-warning">
+          {{cartItemsCount}}</span></span></a>
       </li>
 
        <!--Username Dropdown link-->
