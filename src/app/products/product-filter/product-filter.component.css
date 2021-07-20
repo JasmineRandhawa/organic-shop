@@ -16,6 +16,11 @@
     border: none;
 }
 
+.list-group-item
+{
+    cursor: pointer;
+}
+
 .listItemLabelCSS
 {
     float: left;

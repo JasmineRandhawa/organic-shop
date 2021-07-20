@@ -31,7 +31,7 @@ export class AppComponent {
         let returnURL = localStorage.getItem('returnURL');
 
         //clear the return url after extration
-        localStorage.clear();
+        localStorage.removeItem('returnURL');
 
         //navigate user to return url
         if (returnURL && returnURL !== '/' && returnURL !== '/login')

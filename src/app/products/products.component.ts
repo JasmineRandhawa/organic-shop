@@ -1,7 +1,11 @@
+
 import { Product } from 'src/app/models/product';
 import { CATEGORY_ALL } from 'src/app/constants';
+
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { ShoppingCartService } from '../services/shopping-cart.service';
+
 import { compare , isEmpty } from 'src/app/utility/helper';
 
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -23,10 +27,10 @@ export class ProductsComponent implements OnInit , OnDestroy{
    products: Product[] | undefined;
    defaultCategory = CATEGORY_ALL
    @Input('category') category:string = this.defaultCategory;
-   subscription :Subscription;
- 
+   categorySubscription :Subscription;
+
     /*----Initialize properties from firebase database----*/ 
-    ngOnInit(): void 
+    ngOnInit() 
     { 
       // get list of products from firebase to populate the table
       this.products$ = this.productService.getAll().pipe(map(changes => {
@@ -50,16 +54,17 @@ export class ProductsComponent implements OnInit , OnDestroy{
 
   /*----subscribe to query param----*/ 
   constructor(private productService: ProductService,private categoryService: CategoryService, 
-              private route:ActivatedRoute ) 
+              private route:ActivatedRoute , private cartService:ShoppingCartService) 
   {
     //whenever the url category filter param changes , filter the products
-    this.subscription = this.route.queryParamMap.subscribe(params=>
+    this.categorySubscription = this.route.queryParamMap.subscribe(params=>
                         {
                           this.category = (!isEmpty(params.get('category')) ? params.get('category') 
                                                    : this.defaultCategory) || this.defaultCategory
                           this.filterProducts(this.category);
                         });
   }
+
 
   /*----Filter Products table on Search----*/ 
   filterProducts(categoryFilter: string) 
@@ -75,6 +80,6 @@ export class ProductsComponent implements OnInit , OnDestroy{
 
   /*----unsubscribe from product service on component destruction----*/ 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.categorySubscription?.unsubscribe();
   }
 }

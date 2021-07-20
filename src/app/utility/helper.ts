@@ -9,7 +9,7 @@ export function compare(str1:string,str2:string):boolean
 //checks if a string is empty
 export function isEmpty(str:string|undefined|null):boolean
 {
-  return (str && str != null && str.trim()!=="") ? false : true;
+  return (str != undefined && str != null && str.trim()!=="") ? false : true;
 }
 
 export function showAlertOnAction(objectUpdated :string,
@@ -22,4 +22,11 @@ export function showAlertOnAction(objectUpdated :string,
   }
   else
     alert(action+" "+" failed");
+}
+
+//get current date and time
+export function getCurrentDate() :string
+{
+  let date = new Date();
+  return date.toUTCString();
 }
