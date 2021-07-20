@@ -97,3 +97,13 @@ export class ShoppingCartService {
                   item$.set(item );
               }
          });
+  }
+
+  /*---delete existing shopping cart from firebase database based on shopping-cart's unique Id--*/
+  delete(cartUId: string) : Promise<boolean>  {
+    return this.db.list('/shopping-carts/'+cartUId)
+                  .remove()
+                  .then(()=>true)
+                  .catch(()=>false);
+  }
+}
