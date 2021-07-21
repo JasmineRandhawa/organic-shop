@@ -1,0 +1,63 @@
+.heading{
+    color: lightseagreen;font-weight: bold;font-size: x-large;float: left;
+}
+
+.messageLabel{
+    color: rgb(73, 69, 69);font-weight: normal;font-size: medium;float: left;
+}
+
+.countLabelCSS
+{
+    color: palevioletred; font-weight: bold;
+}
+
+table tr:nth-child(odd) td{
+    background-color: rgb(232, 243, 247);
+}
+
+thead
+{
+    background-color: rgb(176, 241, 238);
+}
+
+th{
+    padding: 5px;
+    width: 250px;
+    color: palevioletred;font-weight: bold;; font-size: x-large;
+}
+
+td{
+    padding: 5px;
+    font-weight: 700;
+    width: 150px;
+    color: rgb(60, 179, 173); text-align: center;width: 200px;
+}
+
+.imageCSS
+{
+    height:60px; width:60px;border-radius: 100%;
+}
+
+.quantityCSS
+{
+    color: lightseagreen;
+    margin-left: 40px;
+    margin-right: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.buttonCartCSS
+{
+    background-color: lightseagreen;
+    width: 34px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.totalPriceLabelCSS
+{
+    color: grey;font-weight: bold;font-size: large;
+}
+

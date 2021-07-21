@@ -71,6 +71,13 @@ export class ShoppingCartService  implements OnDestroy{
     return this.db.object('/shopping-carts/'+cartUId + "/items/"+ productUId).snapshotChanges();
   }
 
+   /*---Get Shopping cart Item based on cartUId---*/
+  getCart(cartUId :string) 
+  {
+   return this.db.object('/shopping-carts/'+cartUId).snapshotChanges();
+  }
+ 
+
  /*---add product shopping cart to firebase database--*/
   async addToCart(item:ShoppingCartItem) {
     let cartUId = await this.getCartId() + "";
