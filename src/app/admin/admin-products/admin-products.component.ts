@@ -64,7 +64,6 @@ export class AdminProductsComponent {
                                                 compare(product.title , titleFilter) &&
                                                   (compare(product.category.name , categoryFilter) || 
                                                   compare(product.category.uId , categoryFilter)));
-      this.products$ = of(filteredProducts);
     }
   }
 

@@ -2,10 +2,9 @@ import { Category } from 'src/app/models/category';
 import { CATEGORY_ALL } from 'src/app/constants';
 import { CategoryService } from 'src/app/services/category.service';
 
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'product-filter',
@@ -22,7 +21,7 @@ export class ProductFilterComponent{
   @Input('category') category:string = this.defaultCategory;
 
   /*----subscribe to query param----*/ 
-  constructor(private categoryService: CategoryService, private route:ActivatedRoute ) 
+  constructor(private categoryService: CategoryService) 
   {
     // get product categories from firebase to populate product category list
     this.categories$ =  this.categoryService.getAll()

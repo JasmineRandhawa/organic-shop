@@ -1,5 +1,5 @@
-import { AppUser } from '../models/app-user';
-import { AuthService } from '../services/auth.service';
+import { AppUser } from 'src/app/models/app-user';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { Component, Input} from '@angular/core';
 
@@ -12,7 +12,7 @@ import { Component, Input} from '@angular/core';
 /*---Navigation Bar Component---*/
 export class NavbarComponent {
 
-  /*----class property declaration----*/ 
+  /*----class property declarations----*/ 
   appUser: AppUser | undefined;
   @Input('cart-items-count') cartItemsCount:number|undefined ;
 

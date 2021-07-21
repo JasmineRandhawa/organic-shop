@@ -1,6 +1,6 @@
 import { Product } from 'src/app/models/product';
-import { ShoppingCartItem } from './../../models/shopping-cart-item';
-import { ShoppingCartService } from './../../services/shopping-cart.service';
+import { ShoppingCartItem } from 'src/app/models/shopping-cart-item';
+import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 
 import { Component, Input} from '@angular/core';
 
@@ -36,6 +36,7 @@ export class ProductCardComponent{
     }   
   }
 
+  /*---Increment product quantity in shopping cart---*/
   addUpdateCart(product:Product|null|undefined)
   {
     if(product && this.quantity)
@@ -46,17 +47,20 @@ export class ProductCardComponent{
     }  
   }
 
+  /*---Decrement product quantity in shopping cart---*/
   reduceUpdateCart(product:Product|null|undefined)
   {
     if(this.quantity)
         this.quantity = this.quantity - 1;
+    
+    //if updated quantity is greater than 0 , update quantity of product in cart   
     if(product && product.uId && this.quantity && this.quantity>0)
     {
         let item = { product :product, quantity:this.quantity} as ShoppingCartItem;
         this.cartService.updateCart(item);
-      }
-      else{
+    }
+    //if updated quantity is less than 0 ,remove item from cart  
+    else
         this.cartService.removeFromCart(product?.uId || "")
-      }
   } 
 }

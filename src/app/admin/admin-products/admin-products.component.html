@@ -4,7 +4,7 @@
 <br />
 <br />
 
-<div *ngIf="(products$ | async) as products">
+<div *ngIf="products">
 
     <!--No Products message-->
     <span class="messageLabel" *ngIf="products.length === 0"> No products available </span>
@@ -58,3 +58,7 @@
         
     </table>
 </div>
+<br />
+<br />
+<br />
+<br />

@@ -1,10 +1,14 @@
 <!--Product Card-->
 <div class="card cardDivCSS" style="width: 15rem;">
     <img class="card-img-top imageCSS" src="{{product?.imageURL}}" alt="Image not available">
+
+    <!--Card Body-->
     <div class="card-body">
         <h5 class="card-title">{{product?.title}}</h5>
         <p class="card-text">{{ product?.price | currency : 'USD':"$"}}</p>
     </div>
+
+     <!--Card Footer-->
     <div class="card-footer">
         <button *ngIf ="!quantity" class="btn buttonCSS" (click)="addToCart(product)">Add to Cart</button>
         <div *ngIf="quantity">
