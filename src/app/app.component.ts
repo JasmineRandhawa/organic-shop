@@ -86,7 +86,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!isEmpty(cart.uId)) {
       let shoppingCart = new ShoppingCart(cart.items, cart.uId, 
                                           cart.user, cart.dateCreated);  
-      console.log(shoppingCart);   
       this.cartItemsCount = shoppingCart.totalItemsCount;
     }
   }
