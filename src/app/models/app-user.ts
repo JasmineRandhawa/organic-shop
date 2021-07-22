@@ -1,8 +1,14 @@
 /*Data Model for App User*/
-export interface AppUser
+export class AppUser
 {
-    uId:string;
-    name:string;
-    email:string,
-    isAdmin:boolean;
+    constructor( public uId:string = "", public name:string ="", 
+                 public email:string ="", public isAdmin:boolean = false)
+    {
+
+    }
+
+    get isLoggedIn()
+    {
+        return this.uId !=="";
+    }
 }

@@ -11,7 +11,7 @@
     <ul class="navbar-nav mr-auto">
       
       <!--Login link-->
-      <li *ngIf="appUser==null" class="nav-item">
+      <li *ngIf="!appUser" class="nav-item">
         <a class="nav-link" routerLink="/login"><span>Login</span></a>
       </li>
 

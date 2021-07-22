@@ -5,11 +5,11 @@
 <br />
 
 <!--No Items message-->
-<span class="messageLabel" *ngIf="cartItems && cartItems.length == 0"> No items available </span>
+<span class="messageLabel" *ngIf="!cart.isAnyItems"> No items available </span>
 
 <!--Items Count message-->
-<span class="messageLabel" *ngIf="cartItems && cartItems.length > 0"> 
-    You have <span class="countLabelCSS">{{cartItemsCount}}</span> items in your cart 
+<span class="messageLabel" *ngIf="cart.isAnyItems"> 
+    You have <span class="countLabelCSS">{{cart.totalItemsCount}}</span> items in your cart 
 </span>
 
 <br />
@@ -17,10 +17,10 @@
 
 
 <!---Cart Items Table--->
-<table *ngIf="cartItems && cartItems.length > 0">
+<table *ngIf="cart.isAnyItems">
 
     <!---Column Headers--->
-    <thead *ngIf="cartItems && cartItems.length > 0">
+    <thead>
         <th>Product</th>
         <th>Price Per Product</th>
         <th>Quantity</th>
@@ -28,24 +28,12 @@
     </thead>
 
     <!---Data Rows--->
-    <tr *ngFor="let item of cartItems">
+    <tr *ngFor="let item of cart.items">
 
-        <td>
-            <div>
-                <img [src]="item.product.imageURL" class="imageCSS" />
-                {{item.product?.title}}
-            </div>
-        </td>
-        <td>{{item.product?.price | currency :'USD':'$'}}</td>
-        <td>
-            <div *ngIf="item.quantity">
-                <button  *ngIf ="item.quantity" class="btn buttonCartCSS" (click)="reduceUpdateCart(item)">-</button>
-                <span class="quantityCSS">{{item.quantity}}</span>
-                <button *ngIf ="item.quantity" class="btn buttonCartCSS" (click)="addUpdateCart(item)">+</button>
-            </div>
-        </td>
-        <td><span *ngIf="item.product && item.product.price && item.quantity">
-             {{item.product.price * item.quantity | currency:'USD' : true}}</span></td>
+        <td><div><img [src]="item.product.imageURL" class="imageCSS" />{{item.product?.title}}</div></td>
+        <td>{{item.product.price | currency :'USD':'$'}}</td>
+        <td><quantity-card [cart-item]="item" ></quantity-card></td>
+        <td><span> {{item.product.price * item.quantity | currency:'USD' : true}}</span></td>
     </tr>
 
     <!--Footer Row-->
@@ -53,10 +41,10 @@
         <td></td>
         <td></td>
         <td></td>
-        <td><span class="totalPriceLabelCSS">Total : {{totalPrice|currency:'USD' : '$'}}</span></td>
+        <td><span class="totalPriceLabelCSS">Total : {{cart.totalPrice|currency:'USD' : '$'}}</span></td>
     </tr>
 </table>
 <br />
 <br />
 <!--Clear Shopping Cart link-->
-<a class="btn buttonCSS" *ngIf="cartItems && cartItems.length>0" (click) ="clearCart()">Clear Shopping Cart</a>
+<a class="btn buttonCSS" *ngIf="cart.isAnyItems" (click) ="clearCart()">Clear Shopping Cart</a>

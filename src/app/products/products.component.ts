@@ -3,11 +3,12 @@ import { Product } from 'src/app/models/product';
 import { CATEGORY_ALL } from 'src/app/constants';
 import { ProductService } from 'src/app/services/product.service';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
-import { compare, isEmpty } from 'src/app/utility/helper';
+import { compare, getCartIdFromLocalStorage, isEmpty } from 'src/app/utility/helper';
 
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ShoppingCart } from '../models/shopping-cart';
 
 @Component({
   selector: 'products',
@@ -18,14 +19,19 @@ import { Subscription } from 'rxjs';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   /*----property declarations----*/
-  products: Product[] | undefined;
-  filteredProducts: Product[] | undefined;
   defaultCategory = CATEGORY_ALL
   @Input('category') category: string = this.defaultCategory;
+
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+
+  cart:ShoppingCart = new ShoppingCart([]);
+  cartIdFormLocalStorage:string = getCartIdFromLocalStorage();
+
   categorySubscription: Subscription;
   productSubscription: Subscription | undefined;
   cartSubscription: Subscription | undefined;
-  cartItems: ShoppingCartItem[] | undefined;
+
 
   /*----Initialize properties from firebase database----*/
   ngOnInit() {
@@ -33,70 +39,63 @@ export class ProductsComponent implements OnInit, OnDestroy {
     // get list of products from firebase to populate the table
     this.productSubscription = this.productService
                                    .getAll()
-                                   .subscribe(changes => {
+                                   .subscribe((products) => {
                                     this.products = [];
                                     this.filteredProducts = [];
-                                    this.cartItems = [];
 
-                                    changes.map((p: any) => {
-                                        let product = {
-                                          uId: p.payload.key,
-                                          title: p.payload.toJSON()['title'],
-                                          price: Number(p.payload.toJSON()['price']),
-                                          category: p.payload.toJSON()['category'],
-                                          imageURL: p.payload.toJSON()['imageURL']
-                                        };
-                                        //populate products list
-                                        this.products?.push(product);
-                                        this.filteredProducts?.push(product);
-                                      })
+                                    products.map((product:Product)=>
+                                    {
+                                      this.products.push(product);
+                                      this.filteredProducts.push(product);
+                                    })
                                   });
 
     // get list of shopping cart Items from firebase to populate the table
-    let cartUId = localStorage.getItem('cartUId') || "";
-    if (!isEmpty(cartUId))
-      this.cartSubscription = this.cartService
-                                  .getCart(cartUId)
-                                  .subscribe((cartSnapshot: any) => {
-                                    this.cartItems = [];
-
-                                    if (cartSnapshot.key) {
-                                      let itemsArray = cartSnapshot.payload
-                                                                    .toJSON()['items'] as ShoppingCartItem[];
-                                      for (let item in itemsArray) {
-                                        let cartItem = itemsArray[item] as ShoppingCartItem;
-                                        if( cartItem.product.price)
-                                        this.cartItems?.push({ product: cartItem.product,
-                                                                quantity: cartItem.quantity });
-                                      }
-                                    }
-                                  });
-      }
+    if (!isEmpty(this.cartIdFormLocalStorage))
+      this.cartSubscription = this.cartService.getCart(this.cartIdFormLocalStorage)
+                                              .subscribe((cart: ShoppingCart | null) => {
+                                                if (cart) {
+                                                  this.cart = new ShoppingCart( [] , cart.uId,
+                                                                                cart.user,
+                                                                                cart.dateCreated)
+                                                  for(let item in cart.items)                                             
+                                                    this.cart.items.push(cart.items[item]);         
+                                                }
+                                              });
+  }
 
   /*----subscribe to query param----*/
   constructor(private productService: ProductService, private route: ActivatedRoute,
-    private cartService: ShoppingCartService) {
-    //whenever the url category filter param changes , filter the products
-    this.categorySubscription = this.route.queryParamMap.subscribe(params => {
-      this.category = (!isEmpty(params.get('category')) ? params.get('category')
-        : this.defaultCategory) || this.defaultCategory
-      this.filterProducts(this.category);
-    });
+              private cartService: ShoppingCartService) {
+
+      //whenever the url category filter param changes , filter the products
+      this.categorySubscription = this.route.queryParamMap
+                                            .subscribe(params => {
+                                              this.category = params.get('category') || this.defaultCategory;
+                                              this.filterProducts(this.category);
+                                            });
+  }
+
+  get isAnyProducts()
+  {
+    console.log(this.filteredProducts.length > 0);
+    return this.filteredProducts.length > 0;
   }
 
    /*----get cart item containign the product from firebase ----*/
-  getCartItemContainingProduct(productUId: string | undefined) {
-    if (this.cartItems && productUId) {
-      let item = this.cartItems?.filter((item) => item.product.uId == productUId)[0];
-      if (item) return item.quantity; else undefined;
+  getCartItem(product:Product) {
+    if(this.cart.items.length>0)
+    {    
+      let item = this.cart.items.filter((item) => item.product.uId === product.uId)[0];
+      if(item)
+        return new ShoppingCartItem(product,item.quantity);
     }
-    return undefined;
+    return new ShoppingCartItem(product,0);
   }
 
   /*----Filter Products table on Search----*/
   filterProducts(categoryFilter: string) {
-    this.filteredProducts = this.products ? this.products : [];
-    if (this.products) {
+    if (this.products.length>0) {
       if (categoryFilter != this.defaultCategory) {
         if (!isEmpty(categoryFilter))
           this.filteredProducts = this.products

@@ -1,9 +1,10 @@
 import { Product } from "./product";
 
-
 /*Data Model for Shopping Cart Item*/
-export interface ShoppingCartItem
+export class ShoppingCartItem
 {
-    product:Product,
-    quantity:number,
+    constructor( public product:Product = new Product(),public quantity:number = 0)
+    {
+
+    }
 }

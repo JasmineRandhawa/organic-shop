@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, SnapshotAction  } from '@angular/fire/database';
+import { AngularFireDatabase  } from '@angular/fire/database';
 import  firebase  from 'firebase/app';
 import { Observable } from 'rxjs';
+import { AppUser } from '../models/app-user';
 
 @Injectable()
 
@@ -14,9 +15,9 @@ export class UserService {
    }
 
   /*---get user from firebase database based on user unique Id--*/
-  get(uId:string) : Observable<SnapshotAction<unknown>>
+  get(uId:string) : Observable<AppUser|null>
   {
-    return  this.db.object('/users/' + uId).snapshotChanges();
+    return this.db.object<AppUser>('/users/' + uId).valueChanges();
   }
 
   /*---save/update details of user logged in from google sign 

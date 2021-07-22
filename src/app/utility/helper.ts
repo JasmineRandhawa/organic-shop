@@ -30,3 +30,9 @@ export function getCurrentDate() :string
   let date = new Date();
   return date.toUTCString();
 }
+
+//get cart Id from local storage
+export function getCartIdFromLocalStorage()
+{
+  return localStorage.getItem('cartUId') || "";
+}

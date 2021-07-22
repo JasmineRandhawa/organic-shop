@@ -2,10 +2,9 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 import { compare , isEmpty , showAlertOnAction } from 'src/app/utility/helper';
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'admin-products',
@@ -14,53 +13,52 @@ import { map } from 'rxjs/operators';
 })
 
 /*----Products table Component----*/
-export class AdminProductsComponent {
+export class AdminProductsComponent  implements OnDestroy{
 
   /*----property declarations----*/ 
-  products$: Observable<Product[]>;
-  products: Product[] | undefined;
-  productsCount:number|undefined;
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  productSubscription: Subscription;
 
   /*----Initialize properties from firebase database----*/ 
-  constructor(private productService: ProductService, private router:Router ) {
+  constructor(private productService: ProductService, private router:Router) {
 
     // get list of products from firebase to populate the table
-    this.products$ = this.productService.getAll().pipe(map(changes => {
-                        this.products = [];
-                        this.productsCount = 0;
+        // get list of products from firebase to populate the table
+    this.productSubscription = this.productService
+                                   .getAll()
+                                   .subscribe((products) => {
+                                    this.products = [];
+                                    this.filteredProducts = [];
 
-                        return changes.map((p: any) => {
-                            let product = {
-                              uId: p.payload.key,
-                              title: p.payload.toJSON()['title'],
-                              price: Number(p.payload.toJSON()['price']),
-                              category: p.payload.toJSON()['category'],
-                              imageURL: p.payload.toJSON()['imageURL']
-                            } as Product
+                                    products.map((product:Product)=>
+                                    {
+                                      this.products.push(product);
+                                      this.filteredProducts.push(product);
+                                    })
+                                  });
+  }
 
-                            this.products?.push(product);
-                            this.productsCount = this.products?.length;
-                            return (product);
-                          }
-                        )
-                    }));
+  get isAnyProducts()
+  {
+    return this.filteredProducts.length > 0
   }
 
   /*----Filter Products table on Search----*/ 
   filterProducts(titleFilter: string , categoryFilter: string) {
     if(this.products)
     {
-      let filteredProducts:Product[] = this.products;
+      this.filteredProducts = this.products;
       
       if(!isEmpty(titleFilter)  && isEmpty(categoryFilter))
-        filteredProducts = this.products.filter((product)=> compare(product.title,titleFilter));
+        this.filteredProducts = this.products.filter((product)=> compare(product.title,titleFilter));
 
       else if(!isEmpty(categoryFilter) && isEmpty(titleFilter))
-        filteredProducts = this.products.filter((product)=> 
+        this.filteredProducts = this.products.filter((product)=> 
                                                 compare(product.category.name , categoryFilter) || 
                                                 compare(product.category.uId , categoryFilter));
       else if (!isEmpty(categoryFilter) && !isEmpty(titleFilter))
-        filteredProducts = this.products.filter((product) => 
+        this.filteredProducts = this.products.filter((product) => 
                                                 compare(product.title , titleFilter) &&
                                                   (compare(product.category.name , categoryFilter) || 
                                                   compare(product.category.uId , categoryFilter)));
@@ -75,5 +73,10 @@ export class AdminProductsComponent {
       let isDeleted = await this.productService.delete(product.uId);
       showAlertOnAction("Product" , isDeleted , "delete", this.router,"/admin/products")
     }
+  }
+
+  /*----Unsubscribe from product service one the product list component is destroyed----*/ 
+  ngOnDestroy(): void {
+    this.productSubscription?.unsubscribe();
   }
 }

@@ -37,7 +37,8 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { ProductFormComponent } from './admin/product-form/product-form.component';
 import { AdminManageProductsComponent } from './admin/admin-manage-products/admin-manage-products.component';
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
-import { ProductCardComponent } from './products/product-card/product-card.component'
+import { ProductCardComponent } from './products/product-card/product-card.component';
+import { QuantityCardComponent } from './quantity-card/quantity-card.component'
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { ProductCardComponent } from './products/product-card/product-card.compo
     ProductFormComponent,
     AdminManageProductsComponent,
     ProductFilterComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    QuantityCardComponent
   ],
   imports: [
     BrowserModule,

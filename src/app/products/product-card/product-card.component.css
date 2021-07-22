@@ -17,30 +17,4 @@
     padding: 0;
 }
 
-.buttonCSS
-{
-    background-color: lightseagreen;
-    width: 240px;
-    color: white;
-    font-weight: bold;
-}
-
-.quantityCSS
-{
-    color: lightseagreen;
-    margin-left: 80px;
-    margin-right: 80px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.buttonCartCSS
-{
-    background-color: lightseagreen;
-    width: 34px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-}
-
 

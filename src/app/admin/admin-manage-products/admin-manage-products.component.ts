@@ -18,35 +18,34 @@ import { Subscription } from 'rxjs';
 export class AdminManageProductsComponent implements OnDestroy {
 
   /*----property declarations----*/ 
-  products: Product[] | undefined =[];
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  productSubscription: Subscription;
   items: Product[] = [];
   itemsCount:number = 0;
-  subscription:Subscription;
   tableResource:DataTableResource<Product> | undefined;
 
   /*----Initialize properties from firebase database----*/ 
   constructor(private productService: ProductService, private router:Router ) {
 
     // get list of products from firebase to populate the table
-    this.subscription = this.productService.getAll().subscribe(changes => {
-                        this.products = [];
-                        changes.map((p: any) => {
-                            let product = {
-                              uId: p.payload.key,
-                              title: p.payload.toJSON()['title'],
-                              price: Number(p.payload.toJSON()['price']),
-                              category: p.payload.toJSON()['category'],
-                              imageURL: p.payload.toJSON()['imageURL']
-                            } as Product
-                            this.products?.push(product);
-                                // initialize table
-                            if(this.products)
-                            {
-                              this.initializeDataTable(this.products);
-                            }
-                          }
-                        )
-                    });   
+    this.productSubscription =  this.productService
+                                    .getAll()
+                                    .subscribe((products) => {
+                                    this.products = [];
+                                    this.filteredProducts = [];
+
+                                    products.map((product:Product)=>
+                                    {
+                                      this.products.push(product);
+                                      this.filteredProducts.push(product);
+                                    })
+
+                                    if(this.products.length>0)
+                                    {
+                                      this.initializeDataTable(this.products);
+                                    }
+                                  });  
   }
 
   /*----initializetable or reload datatable after search filters----*/ 
@@ -110,6 +109,6 @@ export class AdminManageProductsComponent implements OnDestroy {
   
   /*----unsubscribe from product service on component destruction----*/ 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.productSubscription?.unsubscribe();
   }
 }

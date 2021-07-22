@@ -1,11 +1,16 @@
 import { Category } from './category';
 
 /*Data Model for Product*/
-export interface Product
+export class Product
 {
-    uId?:string,
-    title:string,
-    price?:number,
-    category:Category,
-    imageURL:string
+    constructor(public uId:string = "", public title:string = "", public price:number = 0,
+                public category:Category = {uId:"", name:""},public imageURL:string ="")
+    {
+
+    }
+
+    static createProduct(product:Product)
+    {
+       return new Product(product.uId, product.title,product.price,product.category,product.imageURL);
+    }
 }

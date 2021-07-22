@@ -1,20 +1,15 @@
 <!--Product Card-->
 <div class="card cardDivCSS" style="width: 15rem;">
-    <img class="card-img-top imageCSS" src="{{product?.imageURL}}" alt="Image not available">
+    <img class="card-img-top imageCSS" src="{{cartItem.product.imageURL}}" alt="Image not available">
 
     <!--Card Body-->
     <div class="card-body">
-        <h5 class="card-title">{{product?.title}}</h5>
-        <p class="card-text">{{ product?.price | currency : 'USD':"$"}}</p>
+        <h5 class="card-title">{{ cartItem.product.title }}</h5>
+        <p class="card-text">{{ cartItem.product.price | currency : 'USD':"$"}}</p>
     </div>
 
      <!--Card Footer-->
     <div class="card-footer">
-        <button *ngIf ="!quantity" class="btn buttonCSS" (click)="addToCart(product)">Add to Cart</button>
-        <div *ngIf="quantity">
-            <button  *ngIf ="quantity" class="btn buttonCartCSS" (click)="reduceUpdateCart(product)">-</button>
-            <span class="quantityCSS">{{quantity}}</span>
-            <button *ngIf ="quantity" class="btn buttonCartCSS" (click)="addUpdateCart(product)">+</button>
-        </div>
+        <quantity-card [cart-item] = "cartItem"></quantity-card>
     </div>
 </div>

@@ -22,8 +22,7 @@ export class ProductFormComponent implements OnDestroy {
   subscription:Subscription | undefined;
   categories: Category[] | undefined;
   categories$: Observable<Category[]> | undefined;
-  currentProduct: Product  = { uId : "" , title : "" , price :undefined, 
-                               imageURL :"" , category :{uId :"" , name:""} };
+  currentProduct: Product  = new Product();
 
   /*----initialize properties from firebase----*/ 
   constructor(private categoryService: CategoryService, private productService: ProductService,

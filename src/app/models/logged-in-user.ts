@@ -1,6 +1,7 @@
 /*Data Model for LoggedInUser*/
-export interface LoggedInUser
+export class LoggedInUser
 {
-    uId:string;
-    name:string
+    constructor(public uId:string = "", public name:string= "") {
+
+    }
 }

@@ -4,13 +4,13 @@
 <br />
 <br />
 
-<div *ngIf="products">
+<!--No Products message-->
+<span class="messageLabel" *ngIf="!isAnyProducts"> No products available </span>
 
-    <!--No Products message-->
-    <span class="messageLabel" *ngIf="products.length === 0"> No products available </span>
+<div *ngIf="isAnyProducts">
 
     <!--Search Products panel-->
-    <div *ngIf="productsCount && productsCount > 0" class="searchDivCSS">
+    <div class="searchDivCSS">
         <span class="searchLabelCSS">Search Product</span>
         <span class="filterTitleLabelCSS">Title</span>
         <input #titleQuery class="form-control filterCSS" 
@@ -24,7 +24,7 @@
     <br>
 
     <!---Products Table--->
-    <table *ngIf="products.length > 0" class="tableCSS">
+    <table *ngIf="isAnyProducts" class="tableCSS">
         <!---column headers--->
         <thead *ngIf="products.length > 0">
             <th>Product</th>
@@ -36,7 +36,7 @@
         </thead>
 
         <!---rows--->
-        <tr *ngFor="let product of products">
+        <tr *ngFor="let product of filteredProducts">
 
             <td><img [src]="product.imageURL" class="imageCSS" /></td>
             <td>{{product.title}}</td>
