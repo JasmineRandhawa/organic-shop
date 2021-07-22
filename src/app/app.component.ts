@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.user$
                     .subscribe((user:firebase.User |null | undefined)=>
                     {
+                      this.cartItemsCount = 0;
                       if(user && user.uid)
                       {
                         this.userService.save(user);
@@ -55,12 +56,11 @@ export class AppComponent implements OnInit, OnDestroy {
                         .getAll()
                         .subscribe((carts: ShoppingCart[]) => {
 
-                        this.cartItemsCount = 0;
-
                         carts.map(async (cart: any) => {
                           if (cart) {
-                            cart.uId = this.getCartId(cart);
-                            this.populateCartItemCount(cart);
+                            let cartUId = this.getCartId(cart);
+                            if(cart.uId == cartUId)
+                              this.populateCartItemCount(cart);
                           }
                         });
                       });
@@ -81,11 +81,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /*---Populate cart Items count for dispaly on navbar---*/
-  private populateCartItemCount(cart : ShoppingCart)
+  private populateCartItemCount(cart : any)
   {
     if (!isEmpty(cart.uId)) {
-      let shoppingCart = new ShoppingCart();
-      Object.assign(shoppingCart, cart);       
+      let shoppingCart = new ShoppingCart(cart.items, cart.uId, 
+                                          cart.user, cart.dateCreated);  
+      console.log(shoppingCart);   
       this.cartItemsCount = shoppingCart.totalItemsCount;
     }
   }
