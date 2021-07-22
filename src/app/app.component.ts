@@ -29,9 +29,10 @@ export class AppComponent implements OnInit,OnDestroy {
     this.cartSubscription  = this.cartService
                                  .getAll()
                                  .subscribe((carts: ShoppingCart[]) => {
+                                  this.cartItemsCount = 0;
                                   carts.map(async (cart: ShoppingCart) => {
                                     if (cart) {
-                                      this.cartItemsCount = 0;
+                                    
                                       //match the user against the logged in user and extract that cartId and save in local storage
                                       let cartUId = getCartIdFromLocalStorage();
                                       if (isEmpty(cartUId)) {
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit,OnDestroy {
                                         this.cartItemsCount = shoppingCart.totalItemsCount;
                                       }
                                     }
+                                    
                                   });
                                 });
   }
