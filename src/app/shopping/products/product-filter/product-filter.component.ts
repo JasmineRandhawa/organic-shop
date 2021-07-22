@@ -1,8 +1,9 @@
 import { Category } from 'src/app/models/category';
-import { CATEGORY_ALL } from 'src/app/constants';
+import { CATEGORY_ALL } from 'src/app/utility/constants';
 import { CategoryService } from 'src/app/services/category.service';
 
 import { Component, Input } from '@angular/core';
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -12,10 +13,10 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./product-filter.component.css']
 })
 
-/* Products category filter */
+/*---Products category filter---*/
 export class ProductFilterComponent{
 
-   /*----property declarations----*/ 
+   /*---class property declarations---*/ 
   categories$: Observable<Category[]> | undefined;
   defaultCategory = CATEGORY_ALL
   @Input('category') category:string = this.defaultCategory;
@@ -24,16 +25,17 @@ export class ProductFilterComponent{
   constructor(private categoryService: CategoryService) 
   {
     // get product categories from firebase to populate product category list
-    this.categories$ =  this.categoryService.getAll()
-                              .pipe(map(categoriesSnapshot => {
-                                return categoriesSnapshot.map( (categorySnalshot: any) => 
+    this.categories$ =  this.categoryService
+                            .getAll()
+                            .pipe(map(categories => {
+                                return categories.map( (category: any) => 
                                 {
-                                  let category = { uId: categorySnalshot.payload.key, 
-                                                    name: categorySnalshot.payload.toJSON()['name'] 
-                                                  } as Category
-                                  return category;
+                                  let categoryObj = { uId: category.payload.key, 
+                                                      name: category.payload.toJSON()['name'] 
+                                                    } as Category
+                                  return categoryObj;
                                 }
                               )
-            }));
+                            }));
   }
 }

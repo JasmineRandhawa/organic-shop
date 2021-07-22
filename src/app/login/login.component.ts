@@ -1,4 +1,4 @@
-import { AuthService } from '../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { Component} from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,7 +17,6 @@ export class LoginComponent {
    }
 
   /*---Login with Google account---*/
-
   login() {
 
     this.authService.login();

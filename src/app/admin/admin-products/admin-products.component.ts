@@ -4,6 +4,7 @@ import { compare , isEmpty , showAlertOnAction } from 'src/app/utility/helper';
 
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs';
 /*----Products table Component----*/
 export class AdminProductsComponent  implements OnDestroy{
 
-  /*----property declarations----*/ 
+  /*---class property declarations---*/ 
   products: Product[] = [];
   filteredProducts: Product[] = [];
   productSubscription: Subscription;
@@ -24,21 +25,27 @@ export class AdminProductsComponent  implements OnDestroy{
   constructor(private productService: ProductService, private router:Router) {
 
     // get list of products from firebase to populate the table
-        // get list of products from firebase to populate the table
     this.productSubscription = this.productService
                                    .getAll()
                                    .subscribe((products) => {
-                                    this.products = [];
-                                    this.filteredProducts = [];
-
-                                    products.map((product:Product)=>
-                                    {
-                                      this.products.push(product);
-                                      this.filteredProducts.push(product);
-                                    })
-                                  });
+                                      this.populateProducts(products);
+                                   });
   }
 
+  /*---Populate products list---*/
+  private populateProducts(products:Product[])
+  {
+    this.products = [];
+    this.filteredProducts = [];
+
+    products.map((product:Product) =>
+    {
+      this.products.push(product);
+      this.filteredProducts.push(product);
+    })
+  }
+
+  /*---Check if any products are available---*/
   get isAnyProducts()
   {
     return this.filteredProducts.length > 0
@@ -46,26 +53,31 @@ export class AdminProductsComponent  implements OnDestroy{
 
   /*----Filter Products table on Search----*/ 
   filterProducts(titleFilter: string , categoryFilter: string) {
-    if(this.products)
+    if(this.products.length > 0)
     {
       this.filteredProducts = this.products;
       
       if(!isEmpty(titleFilter)  && isEmpty(categoryFilter))
-        this.filteredProducts = this.products.filter((product)=> compare(product.title,titleFilter));
+        this.filteredProducts = this.products
+                                    .filter((product) =>
+                                        compare(product.title,titleFilter));
 
       else if(!isEmpty(categoryFilter) && isEmpty(titleFilter))
-        this.filteredProducts = this.products.filter((product)=> 
-                                                compare(product.category.name , categoryFilter) || 
-                                                compare(product.category.uId , categoryFilter));
+        this.filteredProducts = this.products
+                                    .filter((product)=> 
+                                        compare(product.category.name , categoryFilter) || 
+                                        compare(product.category.uId , categoryFilter));
+     
       else if (!isEmpty(categoryFilter) && !isEmpty(titleFilter))
-        this.filteredProducts = this.products.filter((product) => 
-                                                compare(product.title , titleFilter) &&
-                                                  (compare(product.category.name , categoryFilter) || 
-                                                  compare(product.category.uId , categoryFilter)));
+        this.filteredProducts = this.products
+                                    .filter((product) => 
+                                      compare(product.title , titleFilter) &&
+                                      (compare(product.category.name , categoryFilter) || 
+                                         compare(product.category.uId , categoryFilter)));
     }
   }
 
-  /*----Delete Product----*/ 
+  /*---Delete Product---*/ 
   async onDelete(product: Product) {
     if (!confirm("Are you sure you want to delete product " + product.title + "?")) return;
     
@@ -75,7 +87,7 @@ export class AdminProductsComponent  implements OnDestroy{
     }
   }
 
-  /*----Unsubscribe from product service one the product list component is destroyed----*/ 
+  /*---Unsubscribe from product service once the component is destroyed---*/ 
   ngOnDestroy(): void {
     this.productSubscription?.unsubscribe();
   }

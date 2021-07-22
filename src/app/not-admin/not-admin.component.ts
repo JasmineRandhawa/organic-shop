@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-not-admin',
+  selector: 'not-admin',
   templateUrl: './not-admin.component.html',
   styleUrls: ['./not-admin.component.css']
 })
-export class NotAdminComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class NotAdminComponent {
+  
 }

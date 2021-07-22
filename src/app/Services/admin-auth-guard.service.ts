@@ -17,14 +17,21 @@ export class AdminAuthGuardService implements CanActivate {
   }
 
   /*---check if user can access the page the admin guard is applied on---*/
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.auth.appUser$.pipe(map((user: AppUser | null) => {
-        // if current logged in user is an admin user then user can access the requested page
-        if (user && user.isAdmin) return true;
-        //else user is redirected to the not-admin page to inform user of no-access
-        this.router.navigate(['/not-admin'], { queryParams: { returnURL: state.url } });
-        return false;
-      })
-    );
+  canActivate(route: ActivatedRouteSnapshot, 
+              state: RouterStateSnapshot) : Observable<boolean> {
+
+    return  this.auth.appUser$
+                .pipe(map((user: AppUser | null) => {
+                  // if current logged in user is an admin user 
+                  // then user can access the requested page
+                  if (user && user.isAdmin) return true;
+
+                  //else user is redirected to the not-admin page to 
+                  // inform user of no-access
+                  this.router.navigate( ['/not-admin'], 
+                                      { queryParams: { returnURL: state.url } });
+                  return false;
+                })
+              );
   }
 }

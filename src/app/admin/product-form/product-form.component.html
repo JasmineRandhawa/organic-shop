@@ -91,8 +91,11 @@
     <div class="detailsDivCSS">
 
         <!--Render Image -->
-        <img *ngIf="imageURL.value && imageURL.valid" src="{{imageURL.value}}" class="imageCSS" />
-        <div *ngIf="!imageURL.value ||  imageURL.invalid" class="alterImageCSS"> Image not available</div>
+        <img *ngIf="imageURL.value && imageURL.valid" src="{{imageURL.value}}" 
+              class="imageCSS" />
+        <div *ngIf="!imageURL.value ||  imageURL.invalid" class="alterImageCSS"> 
+             Image not available
+        </div>
         
          <!--Other Product Details-->
         <div *ngIf="title.value || price.value || category.value" class="subDivCSS">

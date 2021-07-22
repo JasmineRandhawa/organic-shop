@@ -19,13 +19,18 @@ export class AuthGuardService implements CanActivate {
   }
 
   /*---check if user can access the page the auth guard is applied on---*/
-  canActivate(route :ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.auth.user$.pipe(map((user: firebase.User | null |undefined) => {
-      // if user is logged in , user can access the requested page
-      if(user && user.uid) return true;
-      //else user is redirected to the login page
-      this.router.navigate(['/login'], { queryParams: { returnURL: state.url}});
-      return  false;
-    })); 
+  canActivate(route :ActivatedRouteSnapshot, 
+              state : RouterStateSnapshot) : Observable<boolean> {
+
+    return  this.auth.user$
+                .pipe(map((user: firebase.User | null |undefined) => {
+                  // if user is logged in , user can access the requested page
+                  if(user && user.uid) return true;
+                  
+                  //else user is redirected to the login page
+                  this.router.navigate(['/login'], 
+                                      { queryParams: { returnURL: state.url}});
+                  return  false;
+                })); 
   }
 }

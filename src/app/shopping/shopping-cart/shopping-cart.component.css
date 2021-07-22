@@ -11,10 +11,6 @@
     color: palevioletred; font-weight: bold;
 }
 
-table tr:nth-child(odd) td{
-    background-color: rgb(232, 243, 247);
-}
-
 thead
 {
     background-color: rgb(176, 241, 238);
@@ -22,7 +18,7 @@ thead
 
 th{
     padding: 5px;
-    width: 250px;
+    width: 280px;
     color: palevioletred;font-weight: bold;; font-size: x-large;
 }
 
@@ -63,10 +59,16 @@ td{
 
 .buttonCSS
 {
-    background-color: lightseagreen;
+    background-color: rgb(240, 65, 65);
     color: white;
     float: left;
     font-weight: bold;
+}
+
+.buttonCheckoutCSS
+{
+    background-color: lightseagreen;
+    float: right;
 }
 
 

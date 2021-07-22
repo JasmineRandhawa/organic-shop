@@ -1,14 +1,21 @@
-.dropdown-toggle
-{
-    cursor: pointer;
-}
-.dropdown-item
-{
-    cursor: pointer;color: lightseagreen;font-size: medium;font-weight: 600;
+.appLabelCSS{
+    color: palevioletred;font-size: x-large;
 }
 
-#cartCount
+.nav-link {
+    font-size: x-large;
+}
+
+.linkLabelCSS{
+    color: lightseagreen;font-weight: bold;
+}
+
+.cartIconCSS
 {
+    color:lightseagreen;
+}
+
+#cartCount {
     font-size: 15px;
     background: #ff0000;
     color: #fff;
@@ -16,14 +23,11 @@
     vertical-align: top;
 }
 
-a{
-    font-size: x-large;
+.dropdown-toggle
+{
+    cursor: pointer;
 }
-
-h3{
-    color: palevioletred;
-}
-
-span{
-    color: lightseagreen;font-weight: bold;
+.dropdown-item
+{
+    cursor: pointer;color: lightseagreen;font-size: medium;font-weight: 600;
 }

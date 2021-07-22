@@ -1,86 +1,50 @@
-import { LoggedInUser } from './../models/logged-in-user';
-import { ShoppingCartItem } from './../models/shopping-cart-item';
-import { ShoppingCart } from '../models/shopping-cart';
+import { AppUser } from 'src/app/models/app-user';
+import { LoggedInUser } from 'src/app/models/logged-in-user';
+import { ShoppingCartItem } from 'src/app/models/shopping-cart-item';
+import { ShoppingCart } from 'src/app/models/shopping-cart';
 
-import { AuthService } from './auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { isEmpty,getCurrentDate, getCartIdFromLocalStorage } from 'src/app/utility/helper';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
+
 import { Observable, Subscription } from 'rxjs';
-import { AppUser } from '../models/app-user';
 import { take } from 'rxjs/operators';
 
 @Injectable()
 
-/*--Shopping Cart Service to get/save/update/delete shopping-cart data from firebase database--*/
+/*---Shopping Cart Service to get/save/update/delete 
+     shopping-cart data from firebase database---*/
 export class ShoppingCartService {
 
+  /*---class property declarations---*/
   appUser : AppUser = new AppUser();
   userSubscription: Subscription;
 
-  /*---Inject angular fire database--*/
+  /*---Inject angular fire database---*/
   constructor(private db: AngularFireDatabase, private authService:AuthService) {
     //get loggedinUser
-    this.userSubscription = this.authService.appUser$.pipe(take(1)).subscribe((appUser :AppUser | null) => 
-                                 {
-                                  if(appUser)
-                                    this.appUser =new AppUser(appUser.uId,appUser.name,
-                                                              appUser.email,appUser.isAdmin);
+    this.userSubscription = this.authService
+                                .appUser$
+                                .pipe(take(1))
+                                .subscribe((appUser :AppUser | null) => {
+                                  if(appUser) this.appUser = appUser
                                  });
   }
 
+  /*---get all carts in the shopping-carts table---*/
   getAll(): Observable<ShoppingCart[]>
   {
     return this.db.list<ShoppingCart>('shopping-carts').valueChanges();
   }
 
-  /*---create new cart in firebase database--*/
-  private createNewCart() : string
+  /*---Get Shopping cart Item based on cartUId---*/
+  getCart(cartUId :string) : Observable<any|null>
   {
-    let loggedInUser = new LoggedInUser(this.appUser.uId,this.appUser.name);
-    let shoppingCart = new ShoppingCart([],"",loggedInUser , getCurrentDate());
-    let cartUId = this.db.list('/shopping-carts/').push(shoppingCart).key || "";
-    if(!isEmpty(cartUId)) 
-    {
-      localStorage.setItem('cartUId', cartUId);
-      console.log(cartUId);
-      this.getCartRef(cartUId).update({uId: cartUId });
-    }
-    return cartUId;
+    return this.getCartRef(cartUId).valueChanges();
   }
 
-  /*---create or get cartUId from firebase database--*/
-  private async getCartId() : Promise<string | null> {
-
-    //get shoppign cart if from local storage is any
-    let cartUId = getCartIdFromLocalStorage();
-    if(!isEmpty(cartUId)) 
-      return cartUId;
-    
-    // create a cart entry and save the new cart's unique Id in local storage
-    cartUId = await this.createNewCart();
-    return cartUId;
-  }
-
-  /*---Get Shopping cart Item based on cartUId and product's unique Id---*/
-  private getCartItem(cartUId :string , itemUId:string) 
-  {
-    return this.db.object('/shopping-carts/'+ cartUId + '/items/' + itemUId);
-  }
-
-   /*---Get Shopping cart Item based on cartUId---*/
-  getCart(cartUId :string) : Observable<ShoppingCart|null>
-  {
-   return this.getCartRef(cartUId).valueChanges();
-  }
-
- /*---Get Shopping cart Item based on cartUId---*/
-  getCartRef(cartUId :string) : AngularFireObject<ShoppingCart>
-  {
-     return this.db.object<ShoppingCart>('/shopping-carts/'+cartUId);
-  }
- 
  /*---add product shopping cart to firebase database--*/
   async addToCart(item:ShoppingCartItem) {
     let cartUId = await this.getCartId() + "";
@@ -106,9 +70,57 @@ export class ShoppingCartService {
   /*---delete existing shopping cart from firebase database based on shopping-cart's unique Id--*/
   async deleteCart() : Promise<boolean>  {
     let cartUId = await this.getCartId() + "";
-    return this.db.list('/shopping-carts/'+ cartUId)
-                  .remove()
-                  .then(()=>true)
-                  .catch(()=>false);
+    return this.getCartRef(cartUId)
+              .remove()
+              .then(()=>true)
+              .catch(()=>false);
   }
+
+  /*---------------------------Private Methods-------------------------*/
+  /*---create new cart in firebase database---*/
+  private createCartId() : string
+  {
+    let loggedInUser = new LoggedInUser(this.appUser.uId,this.appUser.name);
+    let shoppingCart = new ShoppingCart({} ,"" , loggedInUser , getCurrentDate());
+    let cartUId = this.createCart (shoppingCart);
+
+    if(!isEmpty(cartUId)) 
+    {
+      localStorage.setItem('cartUId', cartUId);
+      this.getCartRef(cartUId).update( { uId: cartUId });
+    }
+    return cartUId;
+  }
+  
+  /*---add new cart to shopping-carts table in firebase database---*/
+  private createCart(shoppingCart : ShoppingCart) : string {
+     return this.db.list('/shopping-carts/').push(shoppingCart).key || ""
+  }
+  
+  /*---create or get cartUId from firebase database---*/
+  private async getCartId() : Promise<string | null> {
+  
+    //get shoppign cart if from local storage is any
+    let cartUId = getCartIdFromLocalStorage();
+    if(!isEmpty(cartUId)) 
+      return cartUId;
+    
+    // create a cart entry and save the new cart's unique Id in local storage
+    cartUId = await this.createCartId();
+    return cartUId;
+  }
+
+  /*---Get Shopping cart Item based on cartUId and product's unique Id---*/
+  private getCartItem(cartUId :string , itemUId:string) 
+  {
+    return this.db.object('/shopping-carts/'+ cartUId + '/items/' + itemUId);
+  }
+
+  /*---Get Shopping cart Item based on cartUId---*/
+  private getCartRef(cartUId :string) : AngularFireObject<unknown>
+  {
+    return this.db.object('/shopping-carts/' + cartUId);
+  }
+
+  /*-------------------------------------------------------------------*/
 }

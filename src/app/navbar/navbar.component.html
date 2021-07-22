@@ -1,10 +1,10 @@
  <!--navigation Bar-->
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
 
-    <!--Application Title-->
-    <a class="navbar-brand active current" [routerLink]="appUser  ?  ['/'] :  ['/login']">
-       <h3>OShop</h3>
-    </a>
+  <!--Application Title-->
+  <a class="navbar-brand active current" [routerLink]="appUser  ?  ['/'] :  ['/login']">
+      <span class="appLabelCSS">OShop</span>
+  </a>
 
   <!--Navbar Menu Links-->
   <div class="collapse navbar-collapse">
@@ -12,19 +12,29 @@
       
       <!--Login link-->
       <li *ngIf="!appUser" class="nav-item">
-        <a class="nav-link" routerLink="/login"><span>Login</span></a>
+        <a class="nav-link" routerLink="/login">
+          <span class="linkLabelCSS">Login</span>
+        </a>
       </li>
 
       <!--Products list link-->
       <li *ngIf="appUser" class="nav-item">
-        <a class="nav-link" routerLink="/products"><span>Products</span></a>
+        <a class="nav-link" routerLink="/products">
+          <span class="linkLabelCSS">Products</span>
+        </a>
       </li>
 
       <!--Shopping cart link-->
       <li *ngIf="appUser" class="nav-item">
-        <a class="nav-link" routerLink="/shopping-cart"><span><i class="fa fa-shopping-cart fa-1x"></i>
-        <span  *ngIf="cartItemsCount && cartItemsCount>0" id="cartCount" class="badge badge-warning">
-          {{cartItemsCount}}</span></span></a>
+        <a class="nav-link" routerLink="/shopping-cart">
+          <span>
+              <i class="fa fa-shopping-cart fa-1x cartIconCSS"></i>
+              <span  *ngIf="cartItemsCount && cartItemsCount>0" id="cartCount" 
+                      class="badge badge-warning">
+                {{cartItemsCount}}
+              </span>
+          </span>
+        </a>
       </li>
 
        <!--Username Dropdown link-->
@@ -32,7 +42,7 @@
 
          <!--Logged In Username-->
         <a ngbDropdownToggle class="nav-link dropdown-toggle" data-toggle="dropdown">
-          <span>{{appUser.name }}</span>
+          <span class="linkLabelCSS">{{appUser.name }}</span>
         </a>
 
         <!--Dropdown options-->
@@ -42,15 +52,18 @@
               My Orders
           </a>
 
-          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"routerLink="/admin/products">
+          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item" 
+              routerLink="/admin/products">
               Manage Products
           </a>
 
-          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item"routerLink="/admin/manage-products">
+          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item" 
+              routerLink="/admin/manage-products">
               Manage Products (Pag)
           </a>
 
-          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item" routerLink="/admin/orders">
+          <a *ngIf="appUser.isAdmin" ngbDropdownItem class="dropdown-item" 
+              routerLink="/admin/orders">
               Manage Orders
           </a>
 

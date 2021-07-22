@@ -20,9 +20,8 @@ export class AuthService  {
   }
 
   /*---login and save user details from google sign to firebase database
-    and also store in local storage the return url (if any) on login---*/
+      and also store in local storage the return url (if any) on login---*/
   login() : void {
-
     let returnURL = this.route.snapshot.queryParamMap.get('returnURL') ;
     if(returnURL && returnURL!=="/" && returnURL!=="/login")
       localStorage.setItem('returnURL', returnURL);
@@ -32,7 +31,7 @@ export class AuthService  {
   }
 
   /*---logout the user from application---*/
-  logout() :void {
+  logout() : void {
     localStorage.clear();
     this.fireAuth.signOut()
                  .then(()=> this.router.navigate(['/login']));
@@ -52,7 +51,7 @@ export class AuthService  {
     }));
   }
 
-   /*---get currently logged in user details---*/
+   /*---get firebase user observable---*/
   get user$() : Observable<firebase.User|null|undefined>
   {
      return  this.fireAuth.authState;

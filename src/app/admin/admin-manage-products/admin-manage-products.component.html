@@ -23,6 +23,7 @@
     <br />
     <br />
 
+     <!-- Products Table-->
     <data-table [showTitle]="false" 
                 [itemCount]="itemsCount" 
                 [items]="items" 
@@ -39,7 +40,7 @@
                 *ngIf="products && products.length > 0"  
                 (reload)="reloadItems($event)"
     >
-
+        <!--Data Columns-->
         <data-table-column [property]="'imageURL'" [header]="'Product'" [sortable]="false" [resizable]="true">
             <ng-template #dataTableHeader let-item="item">
                 <span class="columnHeaderCSS">Product</span>
@@ -90,6 +91,7 @@
             </ng-template>
         </data-table-column>
 
+        <!--Actions-->
         <data-table-column class="columnHeaderCSS" [property]="'uId'" [header]="'Action'" [sortable]="false" [resizable]="true">
             <ng-template #dataTableHeader let-item="item">
                 <span class="columnHeaderCSS">Actions</span>

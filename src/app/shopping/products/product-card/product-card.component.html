@@ -1,6 +1,8 @@
 <!--Product Card-->
 <div class="card cardDivCSS" style="width: 15rem;">
-    <img class="card-img-top imageCSS" src="{{cartItem.product.imageURL}}" alt="Image not available">
+
+    <img class="card-img-top imageCSS" src="{{cartItem.product.imageURL}}" 
+         alt="Image not available">
 
     <!--Card Body-->
     <div class="card-body">
@@ -12,4 +14,5 @@
     <div class="card-footer">
         <quantity-card [cart-item] = "cartItem"></quantity-card>
     </div>
+
 </div>

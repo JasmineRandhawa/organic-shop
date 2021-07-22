@@ -32,23 +32,26 @@ export class AdminManageProductsComponent implements OnDestroy {
     this.productSubscription =  this.productService
                                     .getAll()
                                     .subscribe((products) => {
-                                    this.products = [];
-                                    this.filteredProducts = [];
-
-                                    products.map((product:Product)=>
-                                    {
-                                      this.products.push(product);
-                                      this.filteredProducts.push(product);
-                                    })
-
-                                    if(this.products.length>0)
-                                    {
-                                      this.initializeDataTable(this.products);
-                                    }
-                                  });  
+                                      this.populateProducts(products);
+                                      if(this.products.length > 0)
+                                        this.initializeDataTable(this.products); 
+                                     });  
   }
 
-  /*----initializetable or reload datatable after search filters----*/ 
+ /*----populate products list----*/ 
+  private populateProducts(products:Product[])
+  {
+    this.products = [];
+    this.filteredProducts = [];
+
+    products.map((product:Product)=>
+    {
+      this.products.push(product);
+      this.filteredProducts.push(product);
+    })
+  }
+
+  /*----initialize table or reload datatable after search filters----*/ 
   private initializeDataTable(products:Product[])
   {
     this.tableResource = new DataTableResource(products);
@@ -70,7 +73,7 @@ export class AdminManageProductsComponent implements OnDestroy {
   /*----navigate to image in new tab----*/ 
   onNavigate(imageURL:string){
     window.open(imageURL, "_blank");
-}
+  }
 
   /*----Filter Products table on Search----*/ 
   filterProducts(titleFilter: string , categoryFilter: string) {
@@ -88,11 +91,9 @@ export class AdminManageProductsComponent implements OnDestroy {
       else if (!isEmpty(categoryFilter) && !isEmpty(titleFilter))
         filteredProducts = this.products.filter((product) => 
                                                 compare(product.title , titleFilter) &&
-                                                  (compare(product.category.name , categoryFilter) || 
+                                                (compare(product.category.name , categoryFilter) || 
                                                   compare(product.category.uId , categoryFilter)));
-      
-      
-        this.initializeDataTable(filteredProducts);                                          
+      this.initializeDataTable(filteredProducts);                                          
     }
   }
 
@@ -105,9 +106,8 @@ export class AdminManageProductsComponent implements OnDestroy {
       showAlertOnAction("Product" , isDeleted , "delete", this.router,"/admin/products")
     }
   }
-
   
-  /*----unsubscribe from product service on component destruction----*/ 
+  /*---unsubscribe from product service on component destruction---*/ 
   ngOnDestroy(): void {
     this.productSubscription?.unsubscribe();
   }

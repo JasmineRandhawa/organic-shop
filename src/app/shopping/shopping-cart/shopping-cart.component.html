@@ -33,7 +33,7 @@
         <td><div><img [src]="item.product.imageURL" class="imageCSS" />{{item.product?.title}}</div></td>
         <td>{{item.product.price | currency :'USD':'$'}}</td>
         <td><quantity-card [cart-item]="item" ></quantity-card></td>
-        <td><span> {{item.product.price * item.quantity | currency:'USD' : true}}</span></td>
+        <td><span> {{item.totalPricePerProduct | currency:'USD' : true}}</span></td>
     </tr>
 
     <!--Footer Row-->
@@ -43,8 +43,16 @@
         <td></td>
         <td><span class="totalPriceLabelCSS">Total : {{cart.totalPrice|currency:'USD' : '$'}}</span></td>
     </tr>
+
+    <br /><br />
+
+     <!--Buttons for clearing cart or checking out -->
+     <tr>
+        <td><a class="btn buttonCSS"  (click) ="clearCart()">Clear Shopping Cart</a></td>
+        <td></td>
+        <td></td>
+        <td><a class="btn buttonCSS buttonCheckoutCSS" (click) ="checkOut()">Check out</a></td>
+    </tr>
 </table>
 <br />
 <br />
-<!--Clear Shopping Cart link-->
-<a class="btn buttonCSS" *ngIf="cart.isAnyItems" (click) ="clearCart()">Clear Shopping Cart</a>
