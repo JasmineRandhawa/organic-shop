@@ -1,1 +1,81 @@
-<p>check-out works!</p>
+<div class="mainDivCSS">
+    <h1>Check Out</h1>
+
+     <!--Error Summary -->
+    <div *ngIf="(name.invalid && name.touched) ||  (address.invalid && address.touched)">
+        <h4 class="errorSummaryCSS">
+            <i class="fa fa-exclamation-triangle"></i>
+            Please correct below errors.
+        </h4>
+    </div>
+
+    <br /><br />
+
+    <!--Product Form -->
+    <div class="formDivCSS">
+        <form #form="ngForm" ngForm (ngSubmit)="onPlaceOrder(form.value)">
+            <!--Name of user -->
+            <div class="form-group formGroupCSS">
+                <label for="name" class="formLabelCSS">Name</label>
+                <input #name="ngModel" name="name" id="name" 
+                       [(ngModel)]="cart.user.name"  
+                       class="form-control formControlCSS" type="text" required />
+                <div *ngIf="name.touched && name.invalid" class="alert alert-danger">
+                    <div *ngIf="name.errors?.required">The name field is a required.</div>
+                </div>
+            </div>
+
+            <br />
+
+            <br />
+            <!--Shipping Address -->
+            <div class="form-group formGroupCSS">
+                <label for="address" class="formLabelCSS">Address</label>
+                <textarea #address="ngModel" name="address" id="address" 
+                       ngModel multiline="true" rows="5"
+                       class="form-control formControlCSS textAreaCSS" type="text" 
+                          aria-multiline="true" rows="6"  required >
+                       {{address}}
+                </textarea>
+                <div *ngIf="address.touched && address.invalid" class="alert alert-danger">
+                    <div *ngIf="address.errors?.required">The address field is a required.</div>
+                </div>
+            </div>
+
+            <br />
+            <!--Save button -->
+            <div class="form-group formGroupCSS">
+                <button type="submit" class="btn buttonCSS" [disabled]="form.invalid" >Place Order</button>
+            </div>
+        </form>
+    </div>
+
+    &nbsp;&nbsp;
+
+    <!--Product Details panel -->
+    <div class="detailsDivCSS">
+
+        <span class="messageLabel"> Shopping Cart Items : 
+                                    <span class="countLabelCSS">{{cart.totalItemsCount}}</span> 
+        </span>
+        <br />
+        <!---Cart Items Table--->
+        <table id="cartTable">
+            <!---column headers--->
+            <thead>
+                <th>Product</th>
+                <th>Price</th>
+            </thead>
+
+            <!---Data Rows--->
+            <tr *ngFor="let item of cart.items">
+                <td>{{item.quantity}} X {{item.product.title}}</td>
+                <td><span> {{item.totalPricePerProduct | currency:'USD' : true}}</span></td>
+            </tr>
+
+        </table>
+        <br />
+        <span class="totalPriceLabelCSS">Total : {{cart.totalPrice|currency:'USD' : '$'}}</span>
+    </div>
+</div>
+  

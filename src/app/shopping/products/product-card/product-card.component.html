@@ -1,5 +1,5 @@
 <!--Product Card-->
-<div class="card cardDivCSS" style="width: 15rem;">
+<div class="card cardDivCSS"  *ngIf="cartItem" style="width: 15rem;">
 
     <img class="card-img-top imageCSS" src="{{cartItem.product.imageURL}}" 
          alt="Image not available">

@@ -29,7 +29,7 @@ export class ProductService {
     let newKey = this.db.list('/products/')
                         .push(product).key;
     if(newKey)
-      this.getProductRef(newKey).update({uId: newKey });
+      this.getProductRef(newKey).update({productUId: newKey });
 
     return newKey ? newKey : null;
   }
@@ -43,8 +43,8 @@ export class ProductService {
   }
 
   /*---delete existing product from firebase database based on product's unique Id---*/
-  delete(productKey : string) : Promise<boolean>  {
-    return  this.getProductRef(productKey)
+  delete(productUId : string) : Promise<boolean>  {
+    return  this.getProductRef(productUId)
                 .remove()
                 .then(()=>true)
                 .catch(()=>false);
@@ -52,7 +52,7 @@ export class ProductService {
 
   /*---------------------------Private Methods-------------------------*/
   
-  /*---Get Shopping cart Item based on cartUId---*/
+  /*---Get product ref based on productUId---*/
   private getProductRef(productUId : string) : AngularFireObject<Product> {
     return this.db.object<Product>('/products/'+productUId);
   }

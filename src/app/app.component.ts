@@ -1,5 +1,4 @@
 import { ShoppingCart } from 'src/app/models/shopping-cart';
-import { getCartIdFromLocalStorage, isEmpty } from 'src/app/utility/helper';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
@@ -24,70 +23,54 @@ export class AppComponent implements OnInit, OnDestroy {
   userId : string = "";
   cartItemsCount : number  = 0;
   cartSubscription : Subscription | undefined;
+  subscription : Subscription | undefined;
 
   ngOnInit() {
+     /*---Navigating user to return url if user is logged in---*/
+     this.subscription =  this.authService.user$
+                              .subscribe((user:firebase.User |null | undefined)=>
+                              {
+                                this.cartItemsCount = 0;
+                                if(user && user.uid)
+                                {
+                                  this.userService.save(user);
+                                  this.userId = user.uid;
+                                  this.navigateToReturnURL();
 
-    /*---Navigating user to return url if user is logged in---*/
-    this.authService.user$
-                    .subscribe((user:firebase.User |null | undefined)=>
-                    {
-                      this.cartItemsCount = 0;
-                      if(user && user.uid)
-                      {
-                        this.userService.save(user);
-                        this.userId = user.uid;
-                        console.log(this.userId);
-                        this.navigateToReturnURL();
+                                  this.subscibeToCartInfo();
+                                }
+                              });
+}
 
-                        this.getCartInfo();
-                      }
-                    });
-  }
-
-  /*---Inject services to get shopping-cart data for logegd in suer if any---*/
+  /*---Inject services to get user and cart data---*/
   constructor(private userService : UserService , private authService : AuthService,
               private router : Router, private cartService : ShoppingCartService) {
-            
+
   }
 
-  private getCartInfo()
+  /*---subscrivbe to cart service to get shopping-cart data for logged in user if any---*/
+  private subscibeToCartInfo()
   {
     this.cartSubscription  =  this.cartService
-                        .getAll()
-                        .subscribe((carts: ShoppingCart[]) => {
-
-                        carts.map(async (cart: any) => {
-                          if (cart) {
-                            let cartUId = this.getCartId(cart);
-                            if(cart.uId == cartUId)
-                              this.populateCartItemCount(cart);
-                          }
-                        });
-                      });
+                                  .getAll()
+                                  .subscribe((carts: ShoppingCart[]) => {
+                                    this.cartItemsCount = 0;
+                                    localStorage.removeItem('cartUId');
+                                    carts.map(async (cart: any) => {
+                                    if (cart && cart.user && this.userId == cart.user.uId) {
+                                        this.populateCartItemCount(cart);
+                                        localStorage.setItem('cartUId', cart.cartUId);
+                                    }
+                                  });
+                                });
   }
   
-  /*---Match the cart user against the logged in user 
-       and extract that cartId and save in local storage---*/
-  private getCartId(cart : ShoppingCart)
-  {
-    let cartUId = getCartIdFromLocalStorage();
-    if (isEmpty(cartUId)) {
-      if (this.userId == cart.user.uId) {
-        cartUId =  cart.uId;
-        localStorage.setItem('cartUId', cartUId);
-      }
-    }
-    return cartUId;
-  }
-
   /*---Populate cart Items count for dispaly on navbar---*/
   private populateCartItemCount(cart : any)
   {
-    if (!isEmpty(cart.uId)) {
-      let shoppingCart = new ShoppingCart(cart.items, cart.uId, 
+      let shoppingCart = new ShoppingCart(cart.items, cart.cartUId, 
                                           cart.user, cart.dateCreated);  
       this.cartItemsCount = shoppingCart.totalItemsCount;
-    }
   }
 
   /*---Navigate to return URl if any---*/
@@ -106,6 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /*--Unsunscribe from the cart service on component destruction--*/
   ngOnDestroy() : void {
     this.cartSubscription?.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
 }

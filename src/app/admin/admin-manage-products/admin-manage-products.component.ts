@@ -87,12 +87,12 @@ export class AdminManageProductsComponent implements OnDestroy {
       else if(!isEmpty(categoryFilter) && isEmpty(titleFilter))
         filteredProducts = this.products.filter((product)=> 
                                                 compare(product.category.name , categoryFilter) || 
-                                                compare(product.category.uId , categoryFilter));
+                                                compare(product.category.categoryUId , categoryFilter));
       else if (!isEmpty(categoryFilter) && !isEmpty(titleFilter))
         filteredProducts = this.products.filter((product) => 
                                                 compare(product.title , titleFilter) &&
                                                 (compare(product.category.name , categoryFilter) || 
-                                                  compare(product.category.uId , categoryFilter)));
+                                                  compare(product.category.categoryUId , categoryFilter)));
       this.initializeDataTable(filteredProducts);                                          
     }
   }
@@ -101,8 +101,8 @@ export class AdminManageProductsComponent implements OnDestroy {
   async onDelete(product: Product) {
     if (!confirm("Are you sure you want to delete product " + product.title + "?")) return;
     
-    if (product && product.uId) {
-      let isDeleted = await this.productService.delete(product.uId);
+    if (product && product.productUId) {
+      let isDeleted = await this.productService.delete(product.productUId);
       showAlertOnAction("Product" , isDeleted , "delete", this.router,"/admin/products")
     }
   }

@@ -43,15 +43,6 @@ td{
     text-align: center;
 }
 
-.buttonCartCSS
-{
-    background-color: lightseagreen;
-    width: 34px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-}
-
 .totalPriceLabelCSS
 {
     color: grey;font-weight: bold;font-size: large;
@@ -61,12 +52,14 @@ td{
 {
     background-color: rgb(240, 65, 65);
     color: white;
+    width: 200px;
     float: left;
     font-weight: bold;
 }
 
 .buttonCheckoutCSS
 {
+    width: 130px;
     background-color: lightseagreen;
     float: right;
 }

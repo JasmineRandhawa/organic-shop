@@ -1,10 +1,11 @@
 import { ShoppingCart } from '../../models/shopping-cart';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
-import { getCartIdFromLocalStorage, isEmpty, showAlertOnAction } from 'src/app/utility/helper';
+import { getCartIdFromLocalStorage, showAlertOnAction } from 'src/app/utility/helper';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'shopping-cart',
@@ -17,22 +18,22 @@ export class ShoppingCartComponent implements OnInit,OnDestroy {
   /*---class feilds declarations---*/
   cartSubscription: Subscription | undefined;
   cart:ShoppingCart = new ShoppingCart({});
-  cartIdFormLocalStorage:string = getCartIdFromLocalStorage();
 
   /*---Get all items in the shopping cart and computer total price and items count ---*/
   ngOnInit(): void {
-    if (!isEmpty(this.cartIdFormLocalStorage))
-      this.cartSubscription = this.cartService.getCart(this.cartIdFormLocalStorage)
-                                              .subscribe((cart) => {
-                                                if (cart) {
-                                                  this.cart = new ShoppingCart(cart.items, cart.uId,
-                                                                              cart.user, cart.dateCreated);    
-                                                }
-                                              });
+
   }
 
   /*---Inject shopping cart service---*/
   constructor(private cartService: ShoppingCartService, private router: Router) {
+    this.cartSubscription = this.cartService.getCart(getCartIdFromLocalStorage())
+                                            .subscribe((cart) => {
+                                              this.cart = new ShoppingCart();
+                                              if (cart) {
+                                                this.cart = new ShoppingCart(cart.items, cart.cartUId,
+                                                                            cart.user, cart.dateCreated);    
+                                              }
+                                            });
   }
 
   get isAnyItems()
@@ -45,16 +46,15 @@ export class ShoppingCartComponent implements OnInit,OnDestroy {
   {
     let isDeleted = await this.cartService.deleteCart();
     showAlertOnAction("Cart Items" , isDeleted , "cleare", this.router,"/products")
-    if(isDeleted) localStorage.removeItem('cartUId');
   }
 
   checkOut()
   {
-    this.router.navigate(['/check-out'],{queryParams:{ ...this.cart },skipLocationChange: true});
+    this.router.navigate(['/check-out/'+this.cart.cartUId]);
   }
   
   /*--Unsunscribe from the cart service on component destruction--*/
   ngOnDestroy(): void {
-    this.cartSubscription?.unsubscribe();
+    //this.cartSubscription?.unsubscribe();
   }
 }

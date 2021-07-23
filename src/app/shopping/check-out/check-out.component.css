@@ -1,0 +1,107 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+h1{
+    color: lightseagreen;
+}
+
+.mainDivCSS
+{
+  width: 695px; 
+}
+
+.errorSummaryCSS
+{
+    margin-left: 60px; color: rgb(223, 8, 8);
+    float:left;text-align: left; margin-top: 10px;font-size: x-large;
+}
+
+.alert-danger
+{
+font-size: small;width: 260px;
+}
+
+.formDivCSS
+{
+  width: 330px;padding: 5px;display: inline-block;
+}
+
+.formGroupCSS
+{
+  width: 260px;
+}
+
+.formLabelCSS
+{
+  float:left;color: palevioletred;font-weight: bold;font-size: large;
+}
+
+.formControlCSS
+{
+  font-size: 17px;height: 35px;width: 260px;
+}
+
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+textarea.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+.textAreaCSS
+{
+  height:150px;
+}
+
+.buttonCSS
+{
+    background-color: lightseagreen;
+    color: rgb(121, 118, 118);
+    font-weight: bold;
+    float: left;
+}
+
+.detailsDivCSS
+{
+    display:inline-block;width: 230px;  margin-top: 40px;vertical-align: top;
+}
+
+.messageLabel{
+  color: grey;font-weight: bold;font-size: medium;
+}
+
+.countLabelCSS
+{
+    color: palevioletred; font-weight: bold;
+}
+
+
+.tableCSS
+{
+    border: 3px solid #ccc;
+}
+
+#cartTable tr:nth-child(odd) td{
+    background-color: rgb(232, 243, 247);
+}
+
+#cartTable thead
+{
+    background-color: rgb(176, 241, 238);
+}
+
+#cartTable th{
+    padding: 5px;
+    color: palevioletred;font-weight: bold;width: 200px; border: 3px solid #ccc;font-size: medium;
+}
+
+#cartTable td{
+    padding: 5px;
+    font-weight: 700;
+    color: rgb(60, 179, 173); border: 3px solid #ccc;text-align: center;width: 200px;
+}
+
+.totalPriceLabelCSS
+{
+    color: grey;font-weight: bold;font-size: large;
+}

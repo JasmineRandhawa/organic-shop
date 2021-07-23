@@ -13,9 +13,9 @@
             </li>
 
             <!--Categories list from service-->
-            <li *ngFor="let c of categories" [class.active]="category == c.uId"
+            <li *ngFor="let c of categories" [class.active]="category == c.categoryUId"
                 class="list-group-item list-group-item-action" routerLink="/products/"
-                [queryParams]="{ category: c.uId }">
+                [queryParams]="{ category: c.categoryUId }">
 
                 <a class="btn listItemLabelCSS">{{c.name}}</a>
 

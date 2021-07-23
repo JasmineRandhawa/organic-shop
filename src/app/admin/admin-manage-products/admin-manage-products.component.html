@@ -92,14 +92,14 @@
         </data-table-column>
 
         <!--Actions-->
-        <data-table-column class="columnHeaderCSS" [property]="'uId'" [header]="'Action'" [sortable]="false" [resizable]="true">
+        <data-table-column class="columnHeaderCSS" [property]="'productUId'" [header]="'Action'" [sortable]="false" [resizable]="true">
             <ng-template #dataTableHeader let-item="item">
                 <span class="columnHeaderCSS">Actions</span>
             </ng-template>
 
             <ng-template #dataTableCell let-item="item">
                 <!--Edit Product link-->
-                <button class="btn btn-link editButtonCSS" [routerLink]="['/admin/products/', item.uId]">
+                <button class="btn btn-link editButtonCSS" [routerLink]="['/admin/products/', item.productUId]">
                     <span><i class="fa fa-edit fa-2x"></i></span>
                 </button>
                 <!--Delete Product link-->

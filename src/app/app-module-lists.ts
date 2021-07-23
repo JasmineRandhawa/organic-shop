@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
 import { AdminAuthGuardService } from 'src/app/services/admin-auth-guard.service';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
+import { OrderService } from 'src/app/services/order.service';
 
 /*---components---*/
 import { AppComponent } from 'src/app/app.component';
@@ -63,7 +64,8 @@ export const services : Provider [] = [
   AdminAuthGuardService, 
   CategoryService,
   ProductService,
-  ShoppingCartService
+  ShoppingCartService,
+  OrderService
 ];
 
 /*---routes---*/
@@ -72,7 +74,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'products', component: ProductsComponent , canActivate : [AuthGuardService]},
   { path: 'shopping-cart', component: ShoppingCartComponent , canActivate : [AuthGuardService] },
-  { path: 'check-out', component: CheckOutComponent , canActivate : [AuthGuardService]},
+  { path: 'check-out/:id', component: CheckOutComponent , canActivate : [AuthGuardService]},
   { path: 'order-success', component: OrderSuccessComponent , canActivate : [AuthGuardService]},
   { path: 'my-orders', component: MyOrdersComponent , canActivate : [AuthGuardService]},
   { path: 'admin/products/new', component: ProductFormComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},

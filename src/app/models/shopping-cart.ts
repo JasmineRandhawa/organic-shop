@@ -7,7 +7,7 @@ export class ShoppingCart
     items : ShoppingCartItem[] = [];
 
     constructor(public itemsMap : { [productId : string] : ShoppingCartItem } = {} , 
-                public uId : string = "" ,
+                public cartUId : string = "" ,
                 public user : LoggedInUser = new LoggedInUser() ,
                 public dateCreated : string = "") {
         // populate items list from itemsMap key pair object            

@@ -30,7 +30,7 @@ export class ProductFilterComponent{
                             .pipe(map(categories => {
                                 return categories.map( (category: any) => 
                                 {
-                                  let categoryObj = { uId: category.payload.key, 
+                                  let categoryObj = { categoryUId: category.payload.key, 
                                                       name: category.payload.toJSON()['name'] 
                                                     } as Category
                                   return categoryObj;

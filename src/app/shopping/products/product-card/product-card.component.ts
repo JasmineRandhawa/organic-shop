@@ -11,5 +11,5 @@ import { Component, Input} from '@angular/core';
 export class ProductCardComponent{
 
   /*---class property declarations---*/
-  @Input('cart-item') cartItem: ShoppingCartItem  = new ShoppingCartItem();
+  @Input('cart-item') cartItem: ShoppingCartItem | undefined
 }

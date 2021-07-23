@@ -56,7 +56,7 @@ export class ProductFormComponent implements OnDestroy {
   {
     this.categories = [];
     return categories.map((category: any) => {
-        let categoryObj = { uId: category.payload.key, 
+        let categoryObj = { categoryUId: category.payload.key, 
                             name: category.payload.toJSON()['name'] 
                           } as Category
         this.categories.push(categoryObj);
@@ -68,11 +68,11 @@ export class ProductFormComponent implements OnDestroy {
   /*---update selected category on category dropdown change---*/ 
   onCategoryChange(categoryValue:any)
   {
-    let uId = this.categories
+    let categoryUId = this.categories
                   .filter((c)=>c.name == categoryValue)
-                  .map((c)=>c.uId)[0];
-    if(uId)
-      this.currentProduct.category.uId = uId
+                  .map((c)=>c.categoryUId)[0];
+    if(categoryUId)
+      this.currentProduct.category.categoryUId = categoryUId
   }
 
   /*---save new  or update existing product---*/ 
@@ -86,7 +86,7 @@ export class ProductFormComponent implements OnDestroy {
     //update existing object
     if (this.paramId) {
       let isUpdated = await this.productService
-                                .update(this.currentProduct.uId , objToBeSaved);
+                                .update(this.currentProduct.productUId , objToBeSaved);
       showAlertOnAction("Product", isUpdated,"update",this.router,'/admin/products');
     }
     
