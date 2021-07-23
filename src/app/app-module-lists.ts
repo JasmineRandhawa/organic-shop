@@ -20,7 +20,6 @@ import { NotFoundComponent } from 'src/app/not-found/not-found.component';
 
 import { LoginComponent } from 'src/app/login/login.component';
 import { CheckOutComponent } from 'src/app/shopping/check-out/check-out.component';
-import { OrderSuccessComponent } from 'src/app/shopping/order-success/order-success.component';
 import { MyOrdersComponent } from 'src/app/shopping/my-orders/my-orders.component';
 import { NotAdminComponent } from 'src/app/not-admin/not-admin.component';
 
@@ -43,7 +42,6 @@ export const components : any[] = [
 
     LoginComponent,
     CheckOutComponent,
-    OrderSuccessComponent,
     MyOrdersComponent,
     NotAdminComponent,
 
@@ -75,7 +73,6 @@ export const routes: Routes = [
   { path: 'products', component: ProductsComponent , canActivate : [AuthGuardService]},
   { path: 'shopping-cart', component: ShoppingCartComponent , canActivate : [AuthGuardService] },
   { path: 'check-out/:id', component: CheckOutComponent , canActivate : [AuthGuardService]},
-  { path: 'order-success', component: OrderSuccessComponent , canActivate : [AuthGuardService]},
   { path: 'my-orders', component: MyOrdersComponent , canActivate : [AuthGuardService]},
   { path: 'admin/products/new', component: ProductFormComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
   { path: 'admin/products/:id', component: ProductFormComponent , canActivate : [AuthGuardService,AdminAuthGuardService]},
